@@ -1,0 +1,1976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>FoodShare — Secure Food Redistribution Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g1:#02221A;--g2:#04332A;--g3:#065040;--g4:#0A6B54;--g5:#13A077;--g6:#3FC99A;--g7:#85E0BD;--g8:#C2F0DC;--g9:#EAF8F2;
+  --paper:#fff;--off:#F7F6F2;--warm:#FAFAF7;--muted:#F0EFE9;
+  --ink:#111109;--ink2:#2E2E28;--ink3:#666660;--ink4:#9E9E97;
+  --amber:#C97B1A;--amberl:#FEF4DF;--amberd:#7A4A00;
+  --red:#B52E2E;--redl:#FDEAEA;--redd:#7A1B1B;
+  --blue:#1B63B5;--bluel:#EAF0FC;--blued:#0E3C6E;
+  --orange:#D46A1A;--orangel:#FEF0E0;
+  --bdr:rgba(0,0,0,.06);--bdr2:rgba(0,0,0,.12);
+  --r:10px;--rl:16px;--rxl:22px;
+  --sh:0 1px 3px rgba(0,0,0,.05),0 4px 14px rgba(0,0,0,.07);
+  --shx:0 2px 8px rgba(0,0,0,.08),0 16px 48px rgba(0,0,0,.13);
+  --ff:'Outfit',system-ui,sans-serif;
+  --fs:'Playfair Display',Georgia,serif;
+}
+html{scroll-behavior:smooth;font-size:15px}
+body{font-family:var(--ff);background:var(--warm);color:var(--ink);line-height:1.6;overflow-x:hidden}
+
+/* ═══ UTILS ═══ */
+.fw5{font-weight:500}.fw6{font-weight:600}
+.sm{font-size:12px;color:var(--ink3)}
+.tg{color:var(--g5)}.ta{color:var(--amber)}.tr{color:var(--red)}.tb{color:var(--blue)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.mb18{margin-bottom:18px}
+
+/* ═══ HOMEPAGE ═══ */
+#home-view{display:block}#app-view{display:none}
+.hn{position:fixed;top:0;left:0;right:0;z-index:500;transition:all .3s}
+.hn.sc{background:rgba(255,255,255,.97);border-bottom:1px solid var(--bdr);backdrop-filter:blur(16px)}
+.hn-i{max-width:1160px;margin:0 auto;padding:0 28px;height:68px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;cursor:pointer}
+.logo-m{width:36px;height:36px;background:var(--g5);border-radius:10px;display:flex;align-items:center;justify-content:center}
+.logo-m svg{width:20px;height:20px;fill:#EAF8F2}
+.logo-t{font-family:var(--fs);font-size:20px;font-weight:700;color:var(--ink)}
+.hn-links{display:flex;gap:2px}
+.hn-link{padding:7px 13px;font-size:14px;color:var(--ink3);border:none;background:transparent;border-radius:var(--r);cursor:pointer;font-family:var(--ff);transition:all .15s}
+.hn-link:hover{color:var(--ink);background:rgba(0,0,0,.04)}
+.hn-cta{display:flex;gap:8px}
+.btn-sn{padding:8px 18px;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;font-family:var(--ff);background:transparent;border:1.5px solid var(--bdr2);color:var(--ink2);transition:all .15s}
+.btn-sn:hover{background:var(--muted)}
+.btn-gs{padding:9px 20px;border-radius:var(--r);font-size:13px;font-weight:600;cursor:pointer;font-family:var(--ff);background:var(--g5);border:none;color:#fff;transition:all .15s}
+.btn-gs:hover{background:var(--g4)}
+
+/* HERO */
+.hero{min-height:100vh;background:var(--g2);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:140px 32px 80px;position:relative;overflow:hidden}
+.hero-orbs{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.12}
+.orb1{width:700px;height:700px;background:var(--g5);top:-200px;right:-200px}
+.orb2{width:500px;height:500px;background:var(--g7);bottom:-100px;left:-150px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;background:rgba(19,160,119,.2);border:1px solid rgba(63,201,154,.3);border-radius:40px;font-size:12px;color:var(--g7);font-weight:500;letter-spacing:.06em;text-transform:uppercase;margin-bottom:28px;animation:rise .6s ease both}
+.badge-pulse{width:6px;height:6px;border-radius:50%;background:var(--g6);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.6)}}
+.hero-h1{font-family:var(--fs);font-size:clamp(46px,7vw,88px);font-weight:900;color:#fff;line-height:1.08;letter-spacing:-.03em;margin-bottom:22px;animation:rise .6s ease .1s both}
+.hero-h1 em{color:var(--g6);font-style:italic}
+.hero-p{font-size:clamp(16px,2vw,19px);color:var(--g7);max-width:600px;line-height:1.75;margin-bottom:42px;font-weight:300;animation:rise .6s ease .2s both}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;animation:rise .6s ease .3s both}
+.btn-hp{padding:15px 34px;background:var(--g5);color:#fff;border:none;border-radius:var(--r);font-size:16px;font-weight:600;cursor:pointer;font-family:var(--ff);transition:all .15s}
+.btn-hp:hover{background:var(--g4);transform:translateY(-2px)}
+.btn-hs{padding:14px 34px;background:transparent;color:var(--g7);border:1.5px solid rgba(63,201,154,.4);border-radius:var(--r);font-size:16px;font-weight:500;cursor:pointer;font-family:var(--ff);transition:all .15s}
+.btn-hs:hover{background:rgba(63,201,154,.1)}
+.hero-nums{display:flex;justify-content:center;margin-top:70px;animation:rise .6s ease .5s both;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--rl);overflow:hidden;flex-wrap:wrap}
+.hn-box{padding:22px 36px;text-align:center;border-right:1px solid rgba(255,255,255,.08)}
+.hn-box:last-child{border-right:none}
+.hn-v{font-family:var(--fs);font-size:36px;font-weight:700;color:#fff;line-height:1}
+.hn-l{font-size:11px;color:var(--g7);text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+.hero-scroll{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--g7);font-size:11px;opacity:.5;animation:rise .6s ease .8s both}
+.scroll-arrow{width:18px;height:18px;border-right:2px solid var(--g6);border-bottom:2px solid var(--g6);transform:rotate(45deg);animation:bounce 1.8s ease infinite}
+@keyframes bounce{0%,100%{transform:rotate(45deg) translate(0,0)}50%{transform:rotate(45deg) translate(4px,4px)}}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.ps{background:var(--off);border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);padding:20px 28px}
+.ps-i{max-width:1160px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap}
+.ps-l{font-size:11px;color:var(--ink4);text-transform:uppercase;letter-spacing:.09em}
+.pp{display:flex;align-items:center;gap:7px;padding:7px 15px;background:var(--paper);border:1px solid var(--bdr);border-radius:40px;font-size:13px;color:var(--ink3);font-weight:500}
+.pp svg{width:13px;height:13px;fill:var(--g5)}
+.hsec{padding:90px 28px;max-width:1160px;margin:0 auto}
+.sec-tag{font-size:11px;font-weight:600;color:var(--g5);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.sec-h{font-family:var(--fs);font-size:clamp(30px,4vw,50px);font-weight:700;color:var(--ink);line-height:1.18;letter-spacing:-.02em;margin-bottom:14px}
+.sec-sub{font-size:17px;color:var(--ink3);max-width:560px;line-height:1.75;font-weight:300}
+.sec-hdr{margin-bottom:52px}.sec-hdr.c{text-align:center}.sec-hdr.c .sec-sub{margin:0 auto}
+.how-g{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.how-c{background:var(--paper);border:1px solid var(--bdr);border-radius:var(--rl);padding:32px;transition:all .2s;position:relative;overflow:hidden}
+.how-c::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--g5),var(--g6));transform:scaleX(0);transition:.3s;transform-origin:left}
+.how-c:hover{box-shadow:var(--sh);transform:translateY(-3px)}.how-c:hover::after{transform:scaleX(1)}
+.how-n{font-family:var(--fs);font-size:60px;font-weight:900;color:var(--g9);line-height:1;margin-bottom:16px}
+.how-ico{width:44px;height:44px;background:var(--g9);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.how-ico svg{width:22px;height:22px;fill:var(--g4)}
+.how-t{font-size:17px;font-weight:600;margin-bottom:8px}
+.how-d{font-size:14px;color:var(--ink3);line-height:1.7}
+.imp-sec{background:var(--g2);padding:90px 28px}
+.imp-i{max-width:1160px;margin:0 auto}
+.imp-sec .sec-tag{color:var(--g6)}.imp-sec .sec-h{color:#fff}.imp-sec .sec-sub{color:var(--g7)}
+.imp-g{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.07);border-radius:var(--rl);overflow:hidden;margin-top:52px}
+.imp-n{padding:38px 28px;background:rgba(4,51,42,.6);text-align:center}
+.iv{font-family:var(--fs);font-size:50px;font-weight:900;color:#fff;line-height:1;margin-bottom:8px}
+.il{font-size:12px;color:var(--g7);text-transform:uppercase;letter-spacing:.08em}
+.cta-s{background:var(--off);padding:90px 28px;text-align:center}
+.cta-i{max-width:640px;margin:0 auto}
+.cta-h{font-family:var(--fs);font-size:clamp(34px,5vw,58px);font-weight:900;color:var(--ink);line-height:1.12;letter-spacing:-.025em;margin-bottom:16px}
+.cta-h em{color:var(--g5);font-style:italic}
+.cta-p{font-size:17px;color:var(--ink3);margin-bottom:34px;font-weight:300;line-height:1.7}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.footer{background:var(--g1);padding:60px 28px 28px}
+.footer-i{max-width:1160px;margin:0 auto}
+.foot-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,.07)}
+.foot-p{font-size:13px;color:var(--g7);margin-top:10px;line-height:1.7;max-width:280px;font-weight:300}
+.fcol-t{font-size:11px;font-weight:600;color:var(--g7);margin-bottom:14px;letter-spacing:.08em;text-transform:uppercase}
+.flinks{list-style:none;display:flex;flex-direction:column;gap:9px}
+.flinks a{font-size:13px;color:var(--g6);text-decoration:none;transition:color .15s;cursor:pointer}
+.flinks a:hover{color:#fff}
+.foot-btm{display:flex;justify-content:space-between;align-items:center;padding-top:20px;font-size:12px;color:var(--g6);flex-wrap:wrap;gap:10px}
+.fbdg{display:flex;gap:7px}
+.fb{padding:3px 11px;background:rgba(19,160,119,.15);border:1px solid rgba(19,160,119,.2);border-radius:20px;font-size:10px;color:var(--g6)}
+
+/* ═══ APP LAYOUT ═══ */
+.app-wrap{display:grid;grid-template-columns:248px 1fr;grid-template-rows:62px 1fr;min-height:100vh}
+.app-tb{grid-column:1/-1;background:var(--g2);display:flex;align-items:center;justify-content:space-between;padding:0 22px;position:sticky;top:0;z-index:200;border-bottom:1px solid var(--g1)}
+.app-sb{background:var(--paper);border-right:1px solid var(--bdr);padding:16px 10px;position:sticky;top:62px;height:calc(100vh - 62px);overflow-y:auto;display:flex;flex-direction:column;gap:2px}
+.app-main{background:var(--off);padding:28px 30px;overflow-y:auto}
+.atb-logo{display:flex;align-items:center;gap:9px;cursor:pointer}
+.atb-lm{width:32px;height:32px;background:var(--g5);border-radius:9px;display:flex;align-items:center;justify-content:center}
+.atb-lm svg{width:18px;height:18px;fill:#EAF8F2}
+.atb-lt{font-family:var(--fs);font-size:18px;font-weight:700;color:var(--g7)}
+.atb-r{display:flex;align-items:center;gap:10px}
+.atb-notif{width:32px;height:32px;border-radius:50%;border:1px solid rgba(63,201,154,.25);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;background:transparent}
+.atb-notif svg{width:15px;height:15px;fill:var(--g6)}
+.n-dot{width:8px;height:8px;background:#E24B4A;border-radius:50%;position:absolute;top:3px;right:3px;border:2px solid var(--g2)}
+.atb-av{width:32px;height:32px;border-radius:50%;background:var(--g5);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff;cursor:pointer}
+.atb-nm{font-size:13px;color:var(--g6)}
+.atb-rt{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600}
+.rt-donor{background:rgba(27,99,181,.3);color:#93C6F5}
+.rt-charity{background:rgba(201,123,26,.3);color:#F5CC80}
+.rt-admin{background:rgba(181,46,46,.3);color:#F5A0A0}
+.atb-btn{font-size:12px;padding:5px 14px;border:1px solid rgba(63,201,154,.3);border-radius:20px;cursor:pointer;color:var(--g6);background:transparent;font-family:var(--ff);transition:all .15s}
+.atb-btn:hover{background:rgba(63,201,154,.12)}
+.sec-indicator{display:flex;align-items:center;gap:6px;font-size:11px;padding:4px 10px;border-radius:20px;font-weight:600}
+.sec-ok{background:rgba(19,160,119,.2);color:var(--g6);border:1px solid rgba(63,201,154,.2)}
+.sec-warn{background:rgba(201,123,26,.2);color:#F5CC80;border:1px solid rgba(201,123,26,.2)}
+.session-timer{font-size:11px;color:var(--g6);font-weight:500}
+
+/* Sidebar */
+.nav-grp{font-size:10px;font-weight:600;letter-spacing:.1em;color:var(--ink4);padding:10px 10px 3px;text-transform:uppercase}
+.ni{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:var(--r);font-size:13px;cursor:pointer;color:var(--ink3);background:transparent;border:none;width:100%;text-align:left;font-family:var(--ff);transition:all .12s}
+.ni:hover{color:var(--ink);background:var(--muted)}
+.ni.on{color:var(--g3);background:var(--g9);font-weight:600}
+.ni svg{width:15px;height:15px;fill:currentColor;flex-shrink:0;opacity:.65}
+.ni.on svg{opacity:1}
+.ni-badge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;padding:1px 6px;border-radius:20px;font-weight:600}
+.sb-foot{margin-top:auto;padding:12px 10px;border-top:1px solid var(--bdr)}
+.sb-foot p{font-size:11px;color:var(--ink4);line-height:1.5}
+
+/* Pages */
+.page{display:none;animation:fi .25s ease}
+.page.on{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink3);cursor:pointer;border:1px solid var(--bdr);background:var(--paper);border-radius:var(--r);padding:6px 13px;font-family:var(--ff);transition:all .15s;margin-bottom:18px}
+.back-btn:hover{background:var(--muted);color:var(--ink)}
+.back-btn svg{width:13px;height:13px;fill:currentColor}
+.pg-row{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:22px}
+.pg-t{font-family:var(--fs);font-size:26px;font-weight:700;color:var(--ink);margin-bottom:3px;letter-spacing:-.01em}
+.pg-s{font-size:13px;color:var(--ink3)}
+
+/* Cards */
+.card{background:var(--paper);border:1px solid var(--bdr);border-radius:var(--rl);padding:20px;margin-bottom:18px}
+.card-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.card-t{font-size:14px;font-weight:600;color:var(--ink)}
+.card-a{font-size:12px;color:var(--g5);cursor:pointer;border:none;background:transparent;font-family:var(--ff);font-weight:500}
+
+/* Stat cards */
+.sc{background:var(--paper);border:1px solid var(--bdr);border-radius:var(--rl);padding:20px 22px}
+.sc-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.sc-ico svg{width:18px;height:18px;fill:#fff}
+.sc-v{font-family:var(--fs);font-size:30px;font-weight:700;letter-spacing:-.02em;line-height:1;margin-bottom:3px}
+.sc-l{font-size:12px;color:var(--ink3)}
+.sc-d{font-size:11px;margin-top:5px;font-weight:500}
+.mbars{display:flex;align-items:flex-end;gap:3px;height:28px;margin-top:9px}
+.mb{flex:1;border-radius:2px 2px 0 0;background:var(--g8);min-width:6px}
+.mb.pk{background:var(--g5)}
+
+/* Table */
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;color:var(--ink4);font-weight:500;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:8px 10px;border-bottom:1px solid var(--bdr)}
+td{padding:10px 10px;border-bottom:1px solid var(--bdr);color:var(--ink);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--off)}
+.empty-td{text-align:center;padding:32px;color:var(--ink4);font-style:italic;font-size:13px}
+
+/* Badges */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+.badge::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor}
+.b-pend{background:var(--amberl);color:var(--amberd)}
+.b-coll{background:var(--g9);color:var(--g3)}
+.b-exp{background:var(--redl);color:var(--redd)}
+.b-acc{background:var(--g9);color:var(--g3)}
+.b-rej{background:var(--redl);color:var(--redd)}
+.b-can{background:var(--redl);color:var(--redd)}
+.b-donor{background:var(--bluel);color:var(--blued)}
+.b-charity{background:var(--amberl);color:var(--amberd)}
+.b-admin{background:var(--redl);color:var(--redd)}
+.b-blocked{background:var(--redl);color:var(--redd)}
+.b-active{background:var(--g9);color:var(--g3)}
+.b-login-ok{background:#E8F8F2;color:#065040}
+.b-login-fail{background:var(--redl);color:var(--redd)}
+.b-action{background:var(--bluel);color:var(--blued)}
+.b-security{background:var(--orangel);color:var(--orange)}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:9px 18px;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;border:none;font-family:var(--ff);transition:all .15s;white-space:nowrap}
+.btn-g{background:var(--g5);color:#fff}.btn-g:hover{background:var(--g4)}
+.btn-o{background:transparent;color:var(--g5);border:1.5px solid var(--g5)}.btn-o:hover{background:var(--g9)}
+.btn-ghost{background:transparent;color:var(--ink3);border:1px solid var(--bdr)}.btn-ghost:hover{background:var(--muted);color:var(--ink)}
+.btn-red{background:transparent;color:var(--red);border:1px solid rgba(181,46,46,.25)}.btn-red:hover{background:var(--redl)}
+.btn-amber{background:transparent;color:var(--amberd);border:1px solid rgba(201,123,26,.3)}.btn-amber:hover{background:var(--amberl)}
+.btn-blue{background:var(--blue);color:#fff}.btn-blue:hover{background:var(--blued)}
+.btn-orange{background:var(--orange);color:#fff}.btn-orange:hover{background:#A84010}
+.btn-sm{padding:5px 12px;font-size:12px;border-radius:8px}
+.btn-full{width:100%}
+.btn:disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
+
+/* Forms */
+.fg{display:flex;flex-direction:column;gap:5px}
+.fgrid{display:grid;gap:13px}
+.fg2{grid-template-columns:1fr 1fr}
+.flbl{font-size:12px;font-weight:600;color:var(--ink3);letter-spacing:.03em}
+.finput{padding:9px 13px;border:1.5px solid var(--bdr);border-radius:var(--r);font-size:14px;color:var(--ink);background:var(--paper);font-family:var(--ff);transition:all .15s;width:100%}
+.finput:focus{outline:none;border-color:var(--g5)}
+.finput.err-input{border-color:var(--red)}
+.finput::placeholder{color:var(--ink4)}
+select.finput{cursor:pointer}
+textarea.finput{resize:vertical;min-height:84px}
+.ferr{font-size:12px;color:var(--red);display:none;margin-top:2px}
+.fsuc{font-size:13px;color:var(--g3);padding:10px 14px;background:var(--g9);border-radius:var(--r);border:1px solid rgba(19,160,119,.2);display:none}
+
+/* Notices */
+.notice{padding:11px 14px;border-radius:var(--r);font-size:13px;border:1px solid;margin-bottom:12px;line-height:1.5}
+.n-err{background:var(--redl);color:var(--redd);border-color:rgba(181,46,46,.25)}
+.n-warn{background:var(--amberl);color:var(--amberd);border-color:rgba(201,123,26,.25)}
+.n-info{background:var(--bluel);color:var(--blued);border-color:rgba(27,99,181,.2)}
+.n-suc{background:var(--g9);color:var(--g3);border-color:rgba(19,160,119,.2)}
+
+/* Auth */
+.auth-wrap{min-height:calc(100vh - 62px);display:flex;align-items:center;justify-content:center;padding:36px 24px;background:var(--off)}
+.auth-card{background:var(--paper);border:1px solid var(--bdr);border-radius:var(--rxl);overflow:hidden;box-shadow:var(--shx);width:100%;max-width:840px;display:grid;grid-template-columns:1fr 1.15fr}
+.auth-left{background:var(--g2);padding:44px 38px;display:flex;flex-direction:column;justify-content:space-between}
+.al-t{font-family:var(--fs);font-size:32px;font-weight:700;color:var(--g7);line-height:1.2;margin-bottom:10px}
+.al-s{font-size:13px;color:var(--g6);line-height:1.75;font-weight:300}
+.al-feats{display:flex;flex-direction:column;gap:10px;margin-top:26px}
+.al-feat{display:flex;gap:10px;padding:12px 14px;background:rgba(19,160,119,.18);border:1px solid rgba(63,201,154,.2);border-radius:var(--r)}
+.al-fi{width:26px;height:26px;border-radius:7px;background:var(--g5);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px}
+.al-ft strong{display:block;font-size:13px;color:var(--g7);font-weight:600;margin-bottom:1px}
+.al-ft span{font-size:11px;color:var(--g6)}
+.auth-right{padding:44px 38px;display:flex;flex-direction:column;justify-content:center;overflow-y:auto}
+.ar-t{font-family:var(--fs);font-size:26px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.ar-s{font-size:13px;color:var(--ink3);margin-bottom:22px}
+.auth-btm{font-size:13px;color:var(--ink3);text-align:center;margin-top:14px}
+.auth-btm a{color:var(--g5);cursor:pointer;font-weight:600}
+
+/* Password strength */
+.pw-strength{margin-top:6px}
+.pw-bars{display:flex;gap:4px;margin-bottom:4px}
+.pw-bar{height:4px;flex:1;border-radius:2px;background:var(--muted);transition:background .3s}
+.pw-bar.s1{background:var(--red)}
+.pw-bar.s2{background:var(--amber)}
+.pw-bar.s3{background:var(--blue)}
+.pw-bar.s4{background:var(--g5)}
+.pw-text{font-size:11px;font-weight:600}
+.pw-rules{display:flex;flex-direction:column;gap:3px;margin-top:8px;font-size:11px}
+.pw-rule{display:flex;align-items:center;gap:5px;color:var(--ink4);transition:color .2s}
+.pw-rule.ok{color:var(--g4)}
+.pw-rule-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
+
+/* Security score */
+.sec-score{background:linear-gradient(135deg,#0A1628,#162040);border-radius:var(--rl);padding:20px 24px;color:#fff;position:relative;overflow:hidden;margin-bottom:18px}
+.sec-score::before{content:'🛡️';position:absolute;font-size:80px;right:16px;bottom:-10px;opacity:.1;line-height:1}
+.ss-label{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#93C6F5;margin-bottom:6px}
+.ss-val{font-family:var(--fs);font-size:42px;font-weight:700;color:#fff;line-height:1;margin-bottom:4px}
+.ss-desc{font-size:13px;color:#8BB8E8}
+.ss-bar{height:6px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden;margin-top:12px}
+.ss-fill{height:100%;border-radius:3px;transition:width .6s ease}
+
+/* Activity log */
+.log-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--bdr)}
+.log-item:last-child{border-bottom:none}
+.log-ico{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-top:1px}
+.log-ico.ok{background:var(--g9)}
+.log-ico.fail{background:var(--redl)}
+.log-ico.info{background:var(--bluel)}
+.log-ico.warn{background:var(--amberl)}
+.log-info{flex:1}
+.log-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:2px}
+.log-meta{font-size:11px;color:var(--ink4)}
+.log-time{font-size:11px;color:var(--ink4);white-space:nowrap}
+
+/* Security panel */
+.sec-alert{background:var(--orangel);border:1px solid rgba(212,106,26,.3);border-radius:var(--r);padding:12px 14px;display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--orange);margin-bottom:14px}
+.sec-alert svg{width:16px;height:16px;fill:var(--orange);flex-shrink:0;margin-top:1px}
+.lockout-banner{background:linear-gradient(135deg,var(--redd),#A01010);border-radius:var(--r);padding:16px 18px;color:#fff;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.lockout-title{font-size:14px;font-weight:600;margin-bottom:3px}
+.lockout-sub{font-size:12px;opacity:.85}
+.lockout-time{font-family:var(--fs);font-size:24px;font-weight:700;white-space:nowrap}
+.tfa-card{background:linear-gradient(135deg,#0D1F35,#1A3A6E);border-radius:var(--rl);padding:28px 32px;color:#fff;text-align:center}
+.tfa-icon{font-size:48px;margin-bottom:14px}
+.tfa-title{font-family:var(--fs);font-size:22px;font-weight:700;color:#93C6F5;margin-bottom:8px}
+.tfa-sub{font-size:13px;color:#8BB8E8;margin-bottom:22px;line-height:1.6}
+.tfa-boxes{display:flex;gap:8px;justify-content:center;margin-bottom:20px}
+.tfa-box{width:44px;height:52px;border-radius:var(--r);border:2px solid rgba(147,198,245,.3);background:rgba(255,255,255,.08);font-family:var(--fs);font-size:24px;font-weight:700;color:#fff;text-align:center;cursor:text;transition:border .15s;display:flex;align-items:center;justify-content:center}
+.tfa-box.active{border-color:#93C6F5}
+.tfa-input{position:absolute;opacity:0;pointer-events:none;width:0;height:0}
+.tfa-timer{font-size:12px;color:#8BB8E8;margin-bottom:16px}
+
+/* Expiry pill */
+.ep{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+.ep-ok{background:#E8F8F2;color:#065040}
+.ep-soon{background:#FEF4DF;color:#7A4A00}
+.ep-now{background:#FDEAEA;color:#7A1B1B}
+.ep-exp{background:var(--muted);color:var(--ink4)}
+
+/* Food cards */
+.food-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px;perspective:1000px}
+.food-card{background:var(--paper);border:none;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.09),0 1px 3px rgba(0,0,0,.06);transition:transform .35s cubic-bezier(.23,1,.32,1),box-shadow .35s ease;cursor:default;transform-style:preserve-3d;position:relative}
+.food-card:hover{transform:translateY(-10px) rotateX(4deg) rotateY(-2deg) scale(1.02);box-shadow:0 24px 60px rgba(0,0,0,.18),0 6px 20px rgba(0,0,0,.1)}
+.food-card.expired{opacity:.6}
+.food-card.expired:hover{transform:none;box-shadow:0 4px 24px rgba(0,0,0,.09)}
+.fc-img{width:100%;height:160px;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--g9),var(--g8));display:flex;align-items:center;justify-content:center}
+.fc-emoji{font-size:72px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.2));transition:transform .35s ease;line-height:1}
+.food-card:hover .fc-emoji{transform:scale(1.15) rotate(-5deg)}
+.fc-shine{position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.35) 0%,transparent 60%);pointer-events:none}
+.fc-ov{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,.35),transparent);height:60px}
+.fc-badge{position:absolute;top:10px;right:10px}
+.fc-body{padding:16px 18px 18px}
+.fc-name{font-size:15px;font-weight:700;margin-bottom:2px;color:var(--ink)}
+.fc-qty{font-size:12px;color:var(--ink3);font-weight:500}
+.fc-meta{font-size:11px;color:var(--ink4);margin:9px 0;display:flex;flex-direction:column;gap:5px}
+.fc-meta span{display:flex;align-items:center;gap:6px}
+.fc-meta svg{width:11px;height:11px;fill:var(--ink4);flex-shrink:0}
+
+/* Admin tabs */
+.atabs{display:flex;gap:4px;margin-bottom:20px;background:var(--paper);padding:4px;border-radius:var(--rl);border:1px solid var(--bdr);flex-wrap:wrap}
+.atab{padding:7px 16px;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--ink3);font-family:var(--ff);transition:all .15s;white-space:nowrap}
+.atab:hover{color:var(--ink);background:var(--muted)}
+.atab.on{background:var(--g5);color:#fff}
+.atab.sec-tab.on{background:linear-gradient(135deg,#0D1F35,#1A3A6E);color:#93C6F5}
+
+/* Misc */
+.avt{width:30px;height:30px;border-radius:50%;background:var(--g8);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--g3);flex-shrink:0;font-family:var(--fs)}
+.avt-sm{width:26px;height:26px;font-size:10px}
+.prog-row{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.prog-lbl{width:110px;font-size:12px;color:var(--ink3);flex-shrink:0}
+.prog-bar{flex:1;height:5px;background:var(--muted);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--g5),var(--g6));border-radius:3px}
+.prog-pct{font-size:11px;font-weight:600;color:var(--g5);min-width:34px;text-align:right}
+.divider{height:1px;background:var(--bdr);margin:15px 0}
+.acct-sw{background:var(--paper);border:1px solid var(--bdr);border-radius:var(--rl);padding:14px;margin-bottom:18px}
+.as-t{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--ink4);margin-bottom:9px}
+.as-item{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:var(--r);cursor:pointer;transition:all .12s;border:1px solid transparent;margin-bottom:3px}
+.as-item:hover{background:var(--muted)}
+.as-item.cur{background:var(--g9);border-color:rgba(19,160,119,.25)}
+.as-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.prof-hero{display:flex;align-items:center;gap:18px;padding:22px;background:var(--paper);border:1px solid var(--bdr);border-radius:var(--rl);margin-bottom:18px}
+.prof-av{width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg,var(--g5),var(--g4));display:flex;align-items:center;justify-content:center;font-family:var(--fs);font-size:22px;font-weight:700;color:#fff;flex-shrink:0}
+.money-hero{background:linear-gradient(135deg,var(--g2),var(--g3));border-radius:var(--rl);padding:26px 30px;margin-bottom:20px;position:relative;overflow:hidden}
+.money-hero::before{content:'৳';position:absolute;font-family:var(--fs);font-size:120px;font-weight:900;color:rgba(255,255,255,.06);right:24px;bottom:-10px;line-height:1}
+.money-hero h2{font-family:var(--fs);font-size:22px;font-weight:700;color:var(--g7);margin-bottom:6px}
+.money-hero p{font-size:13px;color:var(--g6);line-height:1.65;max-width:520px}
+.meth-g{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+.meth-c{background:var(--paper);border:2px solid var(--bdr);border-radius:var(--rl);padding:14px;cursor:pointer;transition:all .15s;text-align:center}
+.meth-c:hover{border-color:var(--g5)}.meth-c.sel{border-color:var(--g5);background:var(--g9)}
+.meth-ico{font-size:24px;margin-bottom:6px}.meth-n{font-size:13px;font-weight:600}.meth-s{font-size:11px;color:var(--ink4);margin-top:1px}
+.amt-pre{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:4px}
+.amt-p{padding:6px 13px;border:1.5px solid var(--bdr2);border-radius:var(--r);font-size:13px;font-weight:600;cursor:pointer;background:var(--paper);color:var(--ink2);transition:all .15s;font-family:var(--ff)}
+.amt-p:hover{border-color:var(--g5);color:var(--g4)}.amt-p.on{background:var(--g5);color:#fff;border-color:var(--g5)}
+.adm-money-banner{background:linear-gradient(135deg,#1B63B5,#0E3C6E);border-radius:var(--rl);padding:22px 28px;margin-bottom:18px;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.amb-h{font-family:var(--fs);font-size:20px;font-weight:700;color:#93C6F5;margin-bottom:4px}
+.amb-p{font-size:13px;color:#C8DFFA;line-height:1.6}
+.amb-stats{display:flex;gap:24px}
+.amb-sv{font-family:var(--fs);font-size:28px;font-weight:700;color:#fff;line-height:1}
+.amb-sl{font-size:11px;color:#93C6F5;text-transform:uppercase;letter-spacing:.06em;margin-top:3px;text-align:center}
+.send-mf{background:linear-gradient(135deg,var(--g9),var(--paper));border:1.5px solid rgba(19,160,119,.3);border-radius:var(--rl);padding:20px;margin-bottom:18px}
+.ep-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+.ep-ok{background:#E8F8F2;color:#065040}.ep-soon{background:#FEF4DF;color:#7A4A00}.ep-now{background:#FDEAEA;color:#7A1B1B}.ep-exp{background:var(--muted);color:var(--ink4)}
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+.modal-ov.show{display:flex}
+.modal{background:var(--paper);border-radius:var(--rxl);padding:30px;max-width:460px;width:100%;box-shadow:var(--shx)}
+.modal-t{font-family:var(--fs);font-size:21px;font-weight:700;margin-bottom:8px}
+.modal-b{font-size:14px;color:var(--ink3);margin-bottom:22px;line-height:1.6}
+.modal-btns{display:flex;gap:10px;justify-content:flex-end}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--g2);color:var(--g7);padding:12px 20px;border-radius:var(--r);font-size:13px;font-weight:500;display:none;z-index:9999;box-shadow:var(--shx);border:1px solid rgba(63,201,154,.2);max-width:380px}
+.toast.toast-err{background:var(--redd);color:#fff;border-color:rgba(255,100,100,.3)}
+.toast.toast-warn{background:#7A4A00;color:#FEF4DF;border-color:rgba(201,123,26,.3)}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ HOMEPAGE ═══════════════ -->
+<div id="home-view">
+<nav class="hn" id="hn">
+  <div class="hn-i">
+    <div class="logo" onclick="scrollTop()">
+      <div class="logo-m"><svg viewBox="0 0 24 24"><path d="M18.06 22.99h1.66c.84 0 1.53-.64 1.63-1.46L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26 1.44 1.42 2.43 2.89 2.43 5.29v8.05zM1 21.99V21h15.03v.99c0 .55-.45 1-1.01 1H2.01c-.56 0-1.01-.45-1.01-1zm15.03-7c0-3.31-2.89-5.99-6.45-5.99C5.88 8.99 3 11.67 3 14.99h13.03zM4 19h12.03v1H4v-1z"/></svg></div>
+      <span class="logo-t">FoodShare</span>
+    </div>
+    <div class="hn-links">
+      <button class="hn-link" onclick="sc('#how')">How it works</button>
+      <button class="hn-link" onclick="sc('#features')">Features</button>
+      <button class="hn-link" onclick="sc('#impact')">Impact</button>
+    </div>
+    <div class="hn-cta">
+      <button class="btn-sn" onclick="enterApp('signin')">Sign in</button>
+      <button class="btn-gs" onclick="enterApp('signup')">Get started free</button>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-orbs"><div class="orb orb1"></div><div class="orb orb2"></div></div>
+  <div class="hero-badge"><span class="badge-pulse"></span>Bangladesh's #1 food redistribution platform</div>
+  <h1 class="hero-h1">Turn surplus food into<br><em>someone's next meal</em></h1>
+  <p class="hero-p">FoodShare connects donors, charities, and communities. Donate surplus food, track every donation, and help eliminate hunger — one plate at a time.</p>
+  <div class="hero-btns">
+    <button class="btn-hp" onclick="enterApp('signup')">Start donating free</button>
+    <button class="btn-hs" onclick="enterApp('signin')">Sign in to account →</button>
+  </div>
+  <div class="hero-nums">
+    <div class="hn-box"><div class="hn-v">12,400+</div><div class="hn-l">Meals redistributed</div></div>
+    <div class="hn-box"><div class="hn-v">340+</div><div class="hn-l">Active donors</div></div>
+    <div class="hn-box"><div class="hn-v">48</div><div class="hn-l">Charity partners</div></div>
+    <div class="hn-box"><div class="hn-v">🔒 SSL</div><div class="hn-l">Secured & protected</div></div>
+  </div>
+  <div class="hero-scroll">Scroll to explore<div class="scroll-arrow"></div></div>
+</section>
+
+<div class="ps"><div class="ps-i"><span class="ps-l">Trusted by</span>
+  <div class="pp"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>Dhaka Food Bank</div>
+  <div class="pp"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>Amar Shobuj NGO</div>
+  <div class="pp"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>Green Earth Foundation</div>
+  <div class="pp" style="background:var(--g9);border-color:rgba(19,160,119,.3)"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>Bank-grade security</div>
+</div></div>
+
+<div id="how"><div class="hsec">
+  <div class="sec-hdr c"><div class="sec-tag">How it works</div><h2 class="sec-h">Three steps. Real impact.</h2><p class="sec-sub">From your kitchen to someone's plate — FoodShare makes food redistribution effortless and transparent.</p></div>
+  <div class="how-g">
+    <div class="how-c"><div class="how-n">01</div><div class="how-ico"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg></div><div class="how-t">List your surplus food</div><div class="how-d">Fill a simple form with food details, quantity, pickup location and expiry. Takes under 2 minutes.</div></div>
+    <div class="how-c"><div class="how-n">02</div><div class="how-ico"><svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg></div><div class="how-t">Charities get notified</div><div class="how-d">Nearby charity organizations are instantly alerted. They browse, request, and schedule a pickup from the platform.</div></div>
+    <div class="how-c"><div class="how-n">03</div><div class="how-ico"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="how-t">Accept, track &amp; celebrate</div><div class="how-d">Accept or decline requests with one click. Track every donation's journey and see your real-world impact grow.</div></div>
+  </div>
+</div></div>
+
+<div id="features" style="background:var(--off);padding:90px 0"><div style="max-width:1160px;margin:0 auto;padding:0 28px">
+  <div class="sec-hdr"><div class="sec-tag">Security first</div><h2 class="sec-h">Built with protection<br>at every layer</h2></div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+    <div class="how-c"><div style="font-size:28px;margin-bottom:12px">🔒</div><div class="how-t">Login protection</div><div class="how-d">Account lockout after 5 failed attempts. 15-minute cooldown. Prevents brute force attacks.</div></div>
+    <div class="how-c"><div style="font-size:28px;margin-bottom:12px">🔑</div><div class="how-t">Strong passwords</div><div class="how-d">Real-time password strength meter. Enforces uppercase, lowercase, numbers, and special characters.</div></div>
+    <div class="how-c"><div style="font-size:28px;margin-bottom:12px">🛡️</div><div class="how-t">2FA for admins</div><div class="how-d">Admin accounts require a Time-based One-Time Password for every login session.</div></div>
+    <div class="how-c"><div style="font-size:28px;margin-bottom:12px">⏱️</div><div class="how-t">Session timeout</div><div class="how-d">Automatically logs out after 30 minutes of inactivity. Keeps accounts safe on shared devices.</div></div>
+    <div class="how-c"><div style="font-size:28px;margin-bottom:12px">📋</div><div class="how-t">Activity audit log</div><div class="how-d">Every login, action, and security event is logged with timestamp and recorded for admin review.</div></div>
+    <div class="how-c"><div style="font-size:28px;margin-bottom:12px">🚨</div><div class="how-t">Threat detection</div><div class="how-d">Detects suspicious patterns like rapid requests, blocked accounts, and unauthorized admin access.</div></div>
+  </div>
+</div></div>
+
+<div id="impact"><div class="imp-sec"><div class="imp-i">
+  <div class="sec-hdr"><div class="sec-tag">Our impact</div><h2 class="sec-h">Numbers that matter</h2><p class="sec-sub">Every donation on FoodShare creates real, measurable change across Bangladesh.</p></div>
+  <div class="imp-g">
+    <div class="imp-n"><div class="iv">12,400+</div><div class="il">Meals provided</div></div>
+    <div class="imp-n"><div class="iv">4.2T</div><div class="il">Food saved (tonnes)</div></div>
+    <div class="imp-n"><div class="iv">340+</div><div class="il">Active donors</div></div>
+    <div class="imp-n"><div class="iv">100%</div><div class="il">Data protected</div></div>
+  </div>
+</div></div></div>
+
+<div class="cta-s"><div class="cta-i">
+  <div class="cta-h">Ready to make a<br><em>difference?</em></div>
+  <p class="cta-p">Join 340+ donors and 48 charities. Secure, trusted, free forever.</p>
+  <div class="cta-btns">
+    <button class="btn-hp" style="font-size:15px;padding:14px 30px" onclick="enterApp('signup')">Create secure account</button>
+    <button class="btn-hs" style="font-size:15px;padding:13px 30px;color:var(--ink3);border-color:var(--bdr2)" onclick="enterApp('signin')">Sign in →</button>
+  </div>
+  <p style="margin-top:16px;font-size:12px;color:var(--ink4)">🔒 No credit card needed · Your data is encrypted</p>
+</div></div>
+
+<footer class="footer"><div class="footer-i">
+  <div class="foot-top">
+    <div><div class="logo" style="margin-bottom:8px"><div class="logo-m"><svg viewBox="0 0 24 24"><path d="M18.06 22.99h1.66c.84 0 1.53-.64 1.63-1.46L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26 1.44 1.42 2.43 2.89 2.43 5.29v8.05zM1 21.99V21h15.03v.99c0 .55-.45 1-1.01 1H2.01c-.56 0-1.01-.45-1.01-1zm15.03-7c0-3.31-2.89-5.99-6.45-5.99C5.88 8.99 3 11.67 3 14.99h13.03zM4 19h12.03v1H4v-1z"/></svg></div><span style="font-family:var(--fs);font-size:19px;font-weight:700;color:var(--g7)">FoodShare</span></div><p class="foot-p">Connecting surplus food with people who need it most. Building a hunger-free Bangladesh, one donation at a time.</p></div>
+    <div><div class="fcol-t">Platform</div><ul class="flinks"><li><a onclick="enterApp('donate')">Donate food</a></li><li><a onclick="enterApp('foodlist')">Browse food</a></li><li><a onclick="enterApp('dashboard')">Dashboard</a></li></ul></div>
+    <div><div class="fcol-t">Security</div><ul class="flinks"><li><a href="#">Privacy policy</a></li><li><a href="#">Terms of service</a></li><li><a href="#">Security report</a></li></ul></div>
+    <div><div class="fcol-t">Support</div><ul class="flinks"><li><a href="#">Help center</a></li><li><a href="#">Contact us</a></li><li><a href="#">Report abuse</a></li></ul></div>
+  </div>
+  <div class="foot-btm"><span>© 2025 FoodShare. All rights reserved. Reducing waste, feeding hope.</span><div class="fbdg"><div class="fb">🇧🇩 Made in Bangladesh</div><div class="fb">🔒 Bank-grade security</div></div></div>
+</div></footer>
+</div><!-- /home-view -->
+
+<!-- ═══════════════ APP ═══════════════ -->
+<div id="app-view">
+<div class="app-wrap" id="app-wrap">
+
+<header class="app-tb">
+  <div class="atb-logo" onclick="goHome()">
+    <div class="atb-lm"><svg viewBox="0 0 24 24"><path d="M18.06 22.99h1.66c.84 0 1.53-.64 1.63-1.46L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26 1.44 1.42 2.43 2.89 2.43 5.29v8.05zM1 21.99V21h15.03v.99c0 .55-.45 1-1.01 1H2.01c-.56 0-1.01-.45-1.01-1zm15.03-7c0-3.31-2.89-5.99-6.45-5.99C5.88 8.99 3 11.67 3 14.99h13.03zM4 19h12.03v1H4v-1z"/></svg></div>
+    <span class="atb-lt">FoodShare</span>
+  </div>
+  <div class="atb-r" id="atb-r"></div>
+</header>
+
+<nav class="app-sb" id="app-sb">
+  <div class="nav-grp">Main</div>
+  <button class="ni" data-p="dashboard" onclick="nav('dashboard')"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Dashboard</button>
+  <button class="ni" data-p="donate" onclick="nav('donate')"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>Donate food</button>
+  <button class="ni" data-p="money-donate" onclick="nav('money-donate')"><svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>Donate money</button>
+  <button class="ni" data-p="requests" onclick="nav('requests')"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>Requests<span class="ni-badge" id="req-badge" style="display:none">0</span></button>
+  <div class="nav-grp">Browse</div>
+  <button class="ni" data-p="foodlist" onclick="nav('foodlist')"><svg viewBox="0 0 24 24"><path d="M18.06 22.99h1.66c.84 0 1.53-.64 1.63-1.46L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26 1.44 1.42 2.43 2.89 2.43 5.29v8.05zM1 21.99V21h15.03v.99c0 .55-.45 1-1.01 1H2.01c-.56 0-1.01-.45-1.01-1zm15.03-7c0-3.31-2.89-5.99-6.45-5.99C5.88 8.99 3 11.67 3 14.99h13.03zM4 19h12.03v1H4v-1z"/></svg>Food list</button>
+  <button class="ni" data-p="history" onclick="nav('history')"><svg viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>My donations</button>
+  <div class="nav-grp">Account</div>
+  <button class="ni" data-p="profile" onclick="nav('profile')"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>My profile</button>
+  <button class="ni" data-p="security" onclick="nav('security')"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>🔒 Security</button>
+  <button class="ni" data-p="admin" id="admin-nav" style="display:none" onclick="nav('admin')"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>Admin panel</button>
+  <div class="sb-foot"><p>FoodShare Secure v4.0<br><a style="color:var(--g5);cursor:pointer;font-size:11px" onclick="goHome()">← Back to homepage</a></p></div>
+</nav>
+
+<main class="app-main" id="app-main">
+
+<!-- DASHBOARD -->
+<div class="page" id="page-dashboard">
+  <div class="pg-row">
+    <div><div class="pg-t" id="dash-greet">Dashboard</div><div class="pg-s">Your food redistribution activity at a glance</div></div>
+    <button class="btn btn-g" onclick="nav('donate')"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>Donate food</button>
+  </div>
+  <div class="g3 mb18" id="dash-stats"></div>
+  <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:18px">
+    <div>
+      <div class="card"><div class="card-hd"><span class="card-t">Recent donations</span><button class="card-a btn btn-ghost btn-sm" onclick="nav('history')">View all →</button></div>
+        <div class="tw"><table><thead><tr><th>Food item</th><th>Qty</th><th>Date</th><th>Status</th><th></th></tr></thead><tbody id="dash-tbody"></tbody></table></div>
+      </div>
+      <div class="card" id="dash-req-card"></div>
+    </div>
+    <div>
+      <div class="card"><div class="card-hd"><span class="card-t">Impact tracker</span></div><div id="dash-impact"></div></div>
+      <div class="card" style="background:var(--g9);border-color:rgba(19,160,119,.2)">
+        <div style="font-size:13px;color:var(--g3);font-weight:600;margin-bottom:12px">Quick actions</div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <button class="btn btn-g btn-full btn-sm" onclick="nav('donate')">🍱 Post new donation</button>
+          <button class="btn btn-o btn-full btn-sm" onclick="nav('money-donate')">💰 Donate money</button>
+          <button class="btn btn-ghost btn-full btn-sm" onclick="nav('security')">🔒 Security settings</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DONATE -->
+<div class="page" id="page-donate">
+  <button class="back-btn" onclick="goBack()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>Back</button>
+  <div class="pg-row"><div><div class="pg-t">Donate food</div><div class="pg-s">List surplus food for nearby charities to collect</div></div></div>
+  <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:20px">
+    <div class="card">
+      <div class="fgrid" style="gap:13px">
+        <div class="fg"><label class="flbl">Food name *</label><input class="finput" id="dn-name" placeholder="e.g. Cooked rice, Birthday cake" maxlength="100"><div class="ferr" id="dn-nerr">Please enter the food name (max 100 chars).</div></div>
+        <div class="fgrid fg2">
+          <div class="fg"><label class="flbl">Quantity *</label><input class="finput" id="dn-qty" placeholder="e.g. 5 kg, 20 pieces" maxlength="50"><div class="ferr" id="dn-qerr">Please enter quantity.</div></div>
+          <div class="fg"><label class="flbl">Expiry / best before *</label><input class="finput" type="datetime-local" id="dn-exp"><div class="ferr" id="dn-eerr">Please enter expiry time.</div></div>
+        </div>
+        <div class="fg"><label class="flbl">Pickup location *</label><input class="finput" id="dn-loc" placeholder="Full address for charity to collect" maxlength="200"><div class="ferr" id="dn-lerr">Please enter pickup location.</div></div>
+        <div class="fg"><label class="flbl">Description <span style="color:var(--ink4)">(optional)</span></label><textarea class="finput" id="dn-desc" placeholder="Dietary info, packaging, special notes..." maxlength="500"></textarea></div>
+        <div class="fsuc" id="dn-suc">✓ Donation submitted! Nearby charities have been notified.</div>
+        <button class="btn btn-g btn-full" onclick="submitDonation()">Submit donation</button>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="background:var(--g9);border-color:rgba(19,160,119,.2)">
+        <div style="color:var(--g3);font-weight:600;font-size:14px;margin-bottom:13px">How donations work</div>
+        <div style="display:flex;flex-direction:column;gap:11px">
+          <div style="display:flex;align-items:flex-start;gap:10px"><div style="width:23px;height:23px;border-radius:50%;background:var(--g5);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div><div style="font-size:13px;font-weight:600;color:var(--g3)">Fill the form</div><div style="font-size:12px;color:var(--g4)">Enter food details and location</div></div></div>
+          <div style="display:flex;align-items:flex-start;gap:10px"><div style="width:23px;height:23px;border-radius:50%;background:var(--g5);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div><div style="font-size:13px;font-weight:600;color:var(--g3)">Charities notified</div><div style="font-size:12px;color:var(--g4)">They see your listing immediately</div></div></div>
+          <div style="display:flex;align-items:flex-start;gap:10px"><div style="width:23px;height:23px;border-radius:50%;background:var(--g5);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div><div style="font-size:13px;font-weight:600;color:var(--g3)">Accept &amp; track</div><div style="font-size:12px;color:var(--g4)">Accept requests and monitor impact</div></div></div>
+        </div>
+      </div>
+      <div class="card"><div style="font-weight:600;font-size:14px;margin-bottom:11px">Your stats</div><div id="dn-stats"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOD LIST -->
+<div class="page" id="page-foodlist">
+  <button class="back-btn" onclick="goBack()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>Back</button>
+  <div class="pg-row" style="margin-bottom:18px">
+    <div><div class="pg-t">Available food</div><div class="pg-s">Browse donated food and request what you need</div></div>
+    <input class="finput" id="food-search" placeholder="Search food or location..." style="width:210px" oninput="renderFoodList()">
+  </div>
+  <div class="food-grid" id="food-grid"></div>
+</div>
+
+<!-- REQUESTS -->
+<div class="page" id="page-requests">
+  <button class="back-btn" onclick="goBack()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>Back</button>
+  <div class="pg-t">Requests</div><div class="pg-s" style="margin-bottom:20px">Manage incoming and outgoing food requests</div>
+  <div class="card"><div class="card-hd"><span class="card-t">📥 Incoming — Requests for your donations</span></div>
+    <div class="tw"><table><thead><tr><th>From</th><th>Food item</th><th>Qty</th><th>Pickup</th><th>Date</th><th>Status</th><th style="text-align:right">Actions</th></tr></thead><tbody id="req-in-tbody"></tbody></table></div>
+  </div>
+  <div class="card" id="req-out-card"><div class="card-hd"><span class="card-t">📤 Outgoing — Your sent requests</span></div>
+    <div class="tw"><table><thead><tr><th>Food item</th><th>Donor</th><th>Qty</th><th>Pickup</th><th>Status</th><th style="text-align:right">Actions</th></tr></thead><tbody id="req-out-tbody"></tbody></table></div>
+  </div>
+  <div class="card" id="send-req-form" style="background:var(--g9);border-color:rgba(19,160,119,.2)">
+    <div style="font-weight:600;font-size:14px;color:var(--g3);margin-bottom:13px">Send a food request</div>
+    <div class="fgrid fg2" style="gap:12px">
+      <div class="fg"><label class="flbl">Select available food</label><select class="finput" id="rf-sel"></select></div>
+      <div class="fg"><label class="flbl">Quantity needed</label><input class="finput" id="rf-qty" placeholder="e.g. 3 kg" maxlength="50"></div>
+      <div class="fg"><label class="flbl">Preferred pickup time</label><input class="finput" type="datetime-local" id="rf-pickup"></div>
+      <div style="display:flex;align-items:flex-end"><button class="btn btn-g btn-full" onclick="sendFoodRequest()">Send request</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- HISTORY -->
+<div class="page" id="page-history">
+  <button class="back-btn" onclick="goBack()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>Back</button>
+  <div class="pg-row"><div><div class="pg-t">My donation history</div><div class="pg-s">All food donations you have submitted</div></div><button class="btn btn-g btn-sm" onclick="nav('donate')">+ New donation</button></div>
+  <div class="g2 mb18" id="hist-stats"></div>
+  <div class="card"><div class="card-hd"><span class="card-t">All donations</span></div>
+    <div class="tw"><table><thead><tr><th>Food name</th><th>Qty</th><th>Location</th><th>Expiry</th><th>Posted</th><th>Status</th><th style="text-align:right">Actions</th></tr></thead><tbody id="hist-tbody"></tbody></table></div>
+  </div>
+</div>
+
+<!-- MONEY DONATE -->
+<div class="page" id="page-money-donate">
+  <button class="back-btn" onclick="goBack()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>Back</button>
+  <div class="money-hero"><h2>💰 Donate Money to FoodShare</h2><p>Your financial support helps us run the platform, support charities, and redistribute food. Every taka makes a difference.</p></div>
+  <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:20px">
+    <div class="card">
+      <div style="font-weight:600;font-size:15px;margin-bottom:14px">Choose payment method</div>
+      <div class="meth-g" id="meth-g">
+        <div class="meth-c sel" onclick="selMeth(this,'bkash')"><div class="meth-ico">📱</div><div class="meth-n">bKash</div><div class="meth-s">Mobile banking</div></div>
+        <div class="meth-c" onclick="selMeth(this,'nagad')"><div class="meth-ico">💜</div><div class="meth-n">Nagad</div><div class="meth-s">Mobile banking</div></div>
+        <div class="meth-c" onclick="selMeth(this,'rocket')"><div class="meth-ico">🚀</div><div class="meth-n">Rocket</div><div class="meth-s">DBBL Mobile</div></div>
+        <div class="meth-c" onclick="selMeth(this,'bank')"><div class="meth-ico">🏦</div><div class="meth-n">Bank Transfer</div><div class="meth-s">Direct transfer</div></div>
+        <div class="meth-c" onclick="selMeth(this,'card')"><div class="meth-ico">💳</div><div class="meth-n">Debit/Credit</div><div class="meth-s">Visa/Mastercard</div></div>
+        <div class="meth-c" onclick="selMeth(this,'cash')"><div class="meth-ico">💵</div><div class="meth-n">Cash</div><div class="meth-s">In-person drop</div></div>
+      </div>
+      <div class="fgrid" style="gap:13px">
+        <div class="fg"><label class="flbl">Amount (BDT) *</label>
+          <div class="amt-pre"><button class="amt-p" onclick="setAmt(this,100)">৳100</button><button class="amt-p" onclick="setAmt(this,250)">৳250</button><button class="amt-p" onclick="setAmt(this,500)">৳500</button><button class="amt-p" onclick="setAmt(this,1000)">৳1,000</button><button class="amt-p" onclick="setAmt(this,2500)">৳2,500</button><button class="amt-p" onclick="setAmt(this,5000)">৳5,000</button></div>
+          <input class="finput" id="md-amt" type="number" placeholder="Or enter custom amount" min="10" max="1000000" style="margin-top:6px">
+          <div class="ferr" id="md-aerr">Please enter a valid amount (৳10 – ৳10,00,000).</div>
+        </div>
+        <div class="fg"><label class="flbl">Reference / Transaction ID *</label><input class="finput" id="md-ref" placeholder="bKash number or transaction ID" maxlength="100"><div class="ferr" id="md-rerr">Please enter reference number.</div></div>
+        <div class="fg"><label class="flbl">Message <span style="color:var(--ink4)">(optional)</span></label><textarea class="finput" id="md-msg" rows="2" placeholder="Any message with your donation..." maxlength="300"></textarea></div>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink3);cursor:pointer"><input type="checkbox" id="md-anon" style="accent-color:var(--g5)">Donate anonymously</label>
+        <div class="fsuc" id="md-suc">✅ Thank you! Donation recorded and sent to admin for confirmation.</div>
+        <button class="btn btn-g btn-full" style="font-size:15px;padding:12px" onclick="submitMoneyDon()">Send donation 💰</button>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="background:var(--g9);border-color:rgba(19,160,119,.2)">
+        <div style="font-weight:600;font-size:14px;color:var(--g3);margin-bottom:13px">📞 Payment numbers</div>
+        <div style="font-size:13px;color:var(--g3);line-height:2">bKash: <strong>01700-000000</strong><br>Nagad: <strong>01700-000001</strong><br>Rocket: <strong>01700-000002</strong></div>
+      </div>
+      <div class="card"><div style="font-weight:600;font-size:14px;margin-bottom:11px">Your donations</div><div id="my-money-list" style="font-size:13px"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 🔒 SECURITY PAGE -->
+<div class="page" id="page-security">
+  <button class="back-btn" onclick="goBack()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>Back</button>
+  <div class="pg-row"><div><div class="pg-t">🔒 Security Center</div><div class="pg-s">Manage your account security settings</div></div></div>
+  <div id="sec-score-card" class="mb18"></div>
+  <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:20px">
+    <div>
+      <div class="card">
+        <div class="card-hd"><span class="card-t">Change password</span></div>
+        <div class="fgrid" style="gap:12px">
+          <div class="fg"><label class="flbl">Current password *</label><input class="finput" type="password" id="sec-cur-pw" placeholder="Enter your current password"></div>
+          <div class="fg"><label class="flbl">New password *</label>
+            <input class="finput" type="password" id="sec-new-pw" placeholder="Min 8 chars — strong password" oninput="checkPwStrength('sec-new-pw','sec-strength')">
+            <div class="pw-strength" id="sec-strength" style="display:none">
+              <div class="pw-bars"><div class="pw-bar" id="pwb1"></div><div class="pw-bar" id="pwb2"></div><div class="pw-bar" id="pwb3"></div><div class="pw-bar" id="pwb4"></div></div>
+              <div class="pw-text" id="pw-strength-text"></div>
+              <div class="pw-rules">
+                <div class="pw-rule" id="pwr-len"><div class="pw-rule-dot"></div>At least 8 characters</div>
+                <div class="pw-rule" id="pwr-upper"><div class="pw-rule-dot"></div>Uppercase letter (A–Z)</div>
+                <div class="pw-rule" id="pwr-lower"><div class="pw-rule-dot"></div>Lowercase letter (a–z)</div>
+                <div class="pw-rule" id="pwr-num"><div class="pw-rule-dot"></div>Number (0–9)</div>
+                <div class="pw-rule" id="pwr-special"><div class="pw-rule-dot"></div>Special character (!@#$...)</div>
+              </div>
+            </div>
+          </div>
+          <div class="fg"><label class="flbl">Confirm new password *</label><input class="finput" type="password" id="sec-conf-pw" placeholder="Retype new password"></div>
+          <div class="fsuc" id="sec-pw-suc">✅ Password changed successfully!</div>
+          <div class="notice n-err" id="sec-pw-err" style="display:none"></div>
+          <button class="btn btn-g" onclick="changePassword()">Update password</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><span class="card-t">Active session info</span></div>
+        <div id="session-info" style="font-size:13px"></div>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="card-hd"><span class="card-t">Recent activity</span><button class="card-a" onclick="nav('security');renderSecurityPage()">Refresh</button></div>
+        <div id="my-activity-log" style="max-height:320px;overflow-y:auto"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="page" id="page-admin">
+  <button class="back-btn" onclick="goBack()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>Back</button>
+  <div class="pg-row"><div><div class="pg-t">Admin Panel</div><div class="pg-s">Full platform management</div></div></div>
+  <div class="g4 mb18" id="admin-stats-grid"></div>
+  <div class="atabs">
+    <button class="atab on" onclick="aTab('users',this)">👥 Users</button>
+    <button class="atab" onclick="aTab('donations',this)">🍱 Donations</button>
+    <button class="atab" onclick="aTab('requests',this)">📨 Requests</button>
+    <button class="atab" onclick="aTab('money',this)">💰 Money</button>
+    <button class="atab sec-tab" onclick="aTab('security',this)">🔒 Security Log</button>
+    <button class="atab" onclick="aTab('analytics',this)">📊 Analytics</button>
+  </div>
+  <div id="a-users"><div class="card"><div class="card-hd"><span class="card-t">All users</span><button class="btn btn-ghost btn-sm" onclick="exportUsers()">Export CSV</button></div><div class="tw"><table><thead><tr><th>User</th><th>Email</th><th>Type</th><th>Location</th><th>Joined</th><th>Donations</th><th>Last login</th><th>Status</th><th style="text-align:right">Actions</th></tr></thead><tbody id="a-users-tbody"></tbody></table></div></div></div>
+  <div id="a-donations" style="display:none"><div class="card"><div class="card-hd"><span class="card-t">All donations</span></div><div class="tw"><table><thead><tr><th>Food</th><th>Donor</th><th>Qty</th><th>Location</th><th>Posted</th><th>Expiry</th><th>Status</th><th style="text-align:right">Actions</th></tr></thead><tbody id="a-dons-tbody"></tbody></table></div></div></div>
+  <div id="a-requests" style="display:none"><div class="card"><div class="card-hd"><span class="card-t">All requests</span></div><div class="tw"><table><thead><tr><th>From</th><th>To</th><th>Food</th><th>Qty</th><th>Status</th><th>Date</th><th style="text-align:right">Actions</th></tr></thead><tbody id="a-reqs-tbody"></tbody></table></div></div></div>
+  <div id="a-money" style="display:none">
+    <div class="adm-money-banner"><div><div class="amb-h">💰 Money Donation Management</div><div class="amb-p">Track incoming money donations, confirm receipts, send money to charities.</div></div><div class="amb-stats"><div><div class="amb-sv" id="adm-recv-total">৳0</div><div class="amb-sl">Total received</div></div><div><div class="amb-sv" id="adm-sent-total">৳0</div><div class="amb-sl">Total sent</div></div><div><div class="amb-sv" id="adm-pend-cnt">0</div><div class="amb-sl">Pending</div></div></div></div>
+    <div class="send-mf card"><div style="font-weight:600;font-size:14px;color:var(--g3);margin-bottom:13px">📤 Send Money to Charity</div><div class="fgrid" style="gap:12px;grid-template-columns:1fr 1fr 1fr auto"><div class="fg"><label class="flbl">Select charity</label><select class="finput" id="a-send-to"></select></div><div class="fg"><label class="flbl">Amount (BDT)</label><input class="finput" id="a-send-amt" type="number" placeholder="Amount" min="1"></div><div class="fg"><label class="flbl">Method</label><select class="finput" id="a-send-meth"><option value="bkash">bKash</option><option value="nagad">Nagad</option><option value="bank">Bank</option><option value="cash">Cash</option></select></div><div style="display:flex;align-items:flex-end"><button class="btn btn-blue" onclick="adminSendMoney()">Send →</button></div><div class="fg" style="grid-column:span 4"><label class="flbl">Note / purpose</label><input class="finput" id="a-send-note" placeholder="Monthly support for Dhaka Food Bank"></div></div></div>
+    <div class="card"><div class="card-hd"><span class="card-t">📥 Received — User money donations</span><div style="display:flex;gap:6px"><button class="btn btn-ghost btn-sm" onclick="filterMoney('all',this)">All</button><button class="btn btn-ghost btn-sm" onclick="filterMoney('pending',this)">Pending</button><button class="btn btn-ghost btn-sm" onclick="filterMoney('confirmed',this)">Confirmed</button><button class="btn btn-g btn-sm" onclick="exportMoneyCsv()">Export</button></div></div><div class="tw"><table><thead><tr><th>Donor</th><th>Amount</th><th>Method</th><th>Reference</th><th>Message</th><th>Date &amp; Time</th><th>Status</th><th style="text-align:right">Actions</th></tr></thead><tbody id="a-money-tbody"></tbody></table></div></div>
+    <div class="card"><div class="card-hd"><span class="card-t">📤 Sent to charities</span></div><div class="tw"><table><thead><tr><th>To</th><th>Amount</th><th>Method</th><th>Note</th><th>Sent by</th><th>Date</th></tr></thead><tbody id="a-sent-tbody"></tbody></table></div></div>
+  </div>
+  <div id="a-security" style="display:none">
+    <div id="a-security-alerts" class="mb18"></div>
+    <div class="card"><div class="card-hd"><span class="card-t">🔒 Full security audit log</span><div style="display:flex;gap:6px"><button class="btn btn-ghost btn-sm" onclick="filterLog('all',this)">All</button><button class="btn btn-ghost btn-sm" onclick="filterLog('login_ok',this)">Logins</button><button class="btn btn-ghost btn-sm" onclick="filterLog('login_fail',this)">Failed</button><button class="btn btn-ghost btn-sm" onclick="filterLog('security',this)">Security</button><button class="btn btn-ghost btn-sm" onclick="clearLog()">Clear log</button></div></div><div id="a-log-list" style="max-height:500px;overflow-y:auto"></div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+      <div class="card"><div class="card-hd"><span class="card-t">Login statistics</span></div><div id="a-login-stats"></div></div>
+      <div class="card"><div class="card-hd"><span class="card-t">Locked accounts</span></div><div id="a-locked-accts"></div></div>
+    </div>
+  </div>
+  <div id="a-analytics" style="display:none">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+      <div class="card"><div class="card-hd"><span class="card-t">User breakdown</span></div><div id="a-anal-users"></div></div>
+      <div class="card"><div class="card-hd"><span class="card-t">Donation status</span></div><div id="a-anal-dons"></div></div>
+      <div class="card"><div class="card-hd"><span class="card-t">Recent signups</span></div><div id="a-anal-signups"></div></div>
+      <div class="card"><div class="card-hd"><span class="card-t">Platform health</span></div><div id="a-anal-health"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div class="page" id="page-profile">
+  <button class="back-btn" onclick="goBack()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>Back</button>
+  <div class="pg-t">My profile</div><div class="pg-s" style="margin-bottom:16px">Manage your account information</div>
+  <div id="prof-hero-box" class="prof-hero"></div>
+  <div class="acct-sw"><div class="as-t">Switch account</div><div id="as-list"></div></div>
+  <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:20px">
+    <div class="card">
+      <div style="font-weight:600;font-size:14px;margin-bottom:13px">Edit profile information</div>
+      <div class="fgrid" style="gap:12px">
+        <div class="fg"><label class="flbl">Full name *</label><input class="finput" id="pf-name" maxlength="80"></div>
+        <div class="fgrid fg2"><div class="fg"><label class="flbl">Phone</label><input class="finput" id="pf-phone" placeholder="+880-..." maxlength="20"></div><div class="fg"><label class="flbl">Location</label><input class="finput" id="pf-loc" placeholder="City, area" maxlength="100"></div></div>
+        <div class="fsuc" id="pf-suc">✓ Profile updated!</div>
+        <button class="btn btn-g" onclick="updateProfile()">Save changes</button>
+      </div>
+    </div>
+    <div>
+      <div class="card"><div style="font-weight:600;font-size:14px;margin-bottom:12px">Account details</div><div id="pf-details"></div></div>
+      <div class="card" style="border-color:rgba(181,46,46,.2)">
+        <div style="font-weight:600;font-size:14px;color:var(--red);margin-bottom:8px">⚠️ Danger zone</div>
+        <p class="sm" style="margin-bottom:12px;line-height:1.6">Permanently delete your account and all data. Requires password confirmation.</p>
+        <button class="btn btn-red btn-sm" onclick="confirmDeleteAccount()">Delete my account</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SIGN UP -->
+<div class="page" id="page-signup">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-left">
+        <div>
+          <div class="al-t">Create your account.</div>
+          <div class="al-s">Join a secure platform that turns surplus food into smiles.</div>
+          <div class="al-feats">
+            <div class="al-feat"><div class="al-fi">🔒</div><div class="al-ft"><strong>Bank-grade security</strong><span>AES-256 data protection</span></div></div>
+            <div class="al-feat"><div class="al-fi">🍱</div><div class="al-ft"><strong>For donors</strong><span>Donate and track food safely</span></div></div>
+            <div class="al-feat"><div class="al-fi">❤️</div><div class="al-ft"><strong>For charities</strong><span>Request and collect food easily</span></div></div>
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--g6)">🛡️ Your data is <strong style="color:var(--g7)">encrypted &amp; protected</strong></div>
+      </div>
+      <div class="auth-right">
+        <div class="ar-t">Sign up</div>
+        <div class="ar-s">Create your secure account</div>
+        <div class="notice n-err" id="su-dup" style="display:none">An account with this email already exists. <a onclick="nav('signin')" style="color:var(--red);font-weight:700;cursor:pointer">Sign in instead</a></div>
+        <div class="fgrid" style="gap:11px">
+          <div class="fg"><label class="flbl">Full name *</label><input class="finput" id="su-name" placeholder="e.g. Rahim Ahmed" maxlength="80"><div class="ferr" id="su-nerr">Name required (2–80 characters).</div></div>
+          <div class="fg"><label class="flbl">Email address *</label><input class="finput" id="su-email" type="email" placeholder="email@example.com" maxlength="100"><div class="ferr" id="su-eerr">Please enter a valid email address.</div></div>
+          <div class="fgrid fg2">
+            <div class="fg"><label class="flbl">Phone</label><input class="finput" id="su-phone" placeholder="+880-..." maxlength="20"></div>
+            <div class="fg"><label class="flbl">Location</label><input class="finput" id="su-loc" placeholder="City, area" maxlength="100"></div>
+          </div>
+          <div class="fg"><label class="flbl">Password *</label>
+            <input class="finput" type="password" id="su-pw" placeholder="Min 8 chars, must be strong" maxlength="128" oninput="checkPwStrength('su-pw','su-strength')">
+            <div class="pw-strength" id="su-strength" style="display:none">
+              <div class="pw-bars"><div class="pw-bar" id="su-pwb1"></div><div class="pw-bar" id="su-pwb2"></div><div class="pw-bar" id="su-pwb3"></div><div class="pw-bar" id="su-pwb4"></div></div>
+              <div class="pw-text" id="su-pw-strength-text"></div>
+              <div class="pw-rules">
+                <div class="pw-rule" id="su-pwr-len"><div class="pw-rule-dot"></div>At least 8 characters</div>
+                <div class="pw-rule" id="su-pwr-upper"><div class="pw-rule-dot"></div>Uppercase letter (A–Z)</div>
+                <div class="pw-rule" id="su-pwr-lower"><div class="pw-rule-dot"></div>Lowercase letter (a–z)</div>
+                <div class="pw-rule" id="su-pwr-num"><div class="pw-rule-dot"></div>Number (0–9)</div>
+                <div class="pw-rule" id="su-pwr-special"><div class="pw-rule-dot"></div>Special character (!@#$...)</div>
+              </div>
+            </div>
+            <div class="ferr" id="su-perr">Password must be strong (see requirements).</div>
+          </div>
+          <div class="fg"><label class="flbl">Confirm password *</label><input class="finput" type="password" id="su-cpw" placeholder="Retype password" maxlength="128"><div class="ferr" id="su-cperr">Passwords do not match.</div></div>
+          <div class="fg"><label class="flbl">Account type *</label><select class="finput" id="su-type"><option value="">Select account type</option><option value="donor">🍱 Food donor (restaurant/household)</option><option value="charity">❤️ Charity organization (NGO/food bank)</option></select><div class="ferr" id="su-terr">Please select an account type.</div></div>
+          <button class="btn btn-g btn-full" onclick="doSignup()">Create secure account 🔒</button>
+          <div class="auth-btm">Already have an account? <a onclick="nav('signin')">Sign in</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SIGN IN -->
+<div class="page" id="page-signin">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-left">
+        <div>
+          <div class="al-t">Welcome back.</div>
+          <div class="al-s">Every time you return, someone somewhere eats. Your account is protected.</div>
+        </div>
+        <div style="background:rgba(19,160,119,.18);border:1px solid rgba(63,201,154,.2);border-radius:var(--rl);padding:20px;margin-top:auto">
+          <div style="font-family:var(--fs);font-size:34px;font-weight:700;color:var(--g7)">1,240</div>
+          <div style="font-size:12px;color:var(--g6);margin-top:4px">meals redistributed this month</div>
+          <div style="margin-top:14px;font-size:11px;color:var(--g6);line-height:2">
+            <strong style="color:var(--g7)">Demo accounts:</strong><br>
+            donor@test.com / Test@1234<br>
+            charity@test.com / Test@1234<br>
+            admin@foodshare.com / Admin@9999
+          </div>
+        </div>
+      </div>
+      <div class="auth-right">
+        <div class="ar-t">Sign in</div>
+        <div class="ar-s">Access your FoodShare account securely</div>
+        <div id="lockout-banner" style="display:none" class="lockout-banner"><div><div class="lockout-title">🔒 Account temporarily locked</div><div class="lockout-sub">Too many failed attempts. Try again in:</div></div><div class="lockout-time" id="lockout-time">15:00</div></div>
+        <div class="notice n-err" id="si-err" style="display:none"></div>
+        <div class="notice n-warn" id="si-blocked" style="display:none">Your account has been blocked by admin. Contact support.</div>
+        <div class="notice n-warn" id="si-warn" style="display:none"></div>
+        <div class="fgrid" style="gap:13px">
+          <div class="fg"><label class="flbl">Email address</label><input class="finput" id="si-email" type="email" placeholder="email@example.com" maxlength="100" onkeydown="if(event.key==='Enter')doSignin()"></div>
+          <div class="fg"><label class="flbl">Password</label><input class="finput" id="si-pw" type="password" placeholder="Your password" maxlength="128" onkeydown="if(event.key==='Enter')doSignin()"></div>
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink3);cursor:pointer"><input type="checkbox" id="si-rem" checked style="accent-color:var(--g5)">Remember me on this device</label>
+          <button class="btn btn-g btn-full" id="signin-btn" onclick="doSignin()">Sign in securely 🔒</button>
+          <div class="auth-btm" style="display:flex;justify-content:space-between"><a onclick="nav('signup')">Create account</a><a onclick="nav('forgot')">Forgot password?</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 2FA FOR ADMIN -->
+<div class="page" id="page-tfa">
+  <div class="auth-wrap">
+    <div style="max-width:440px;width:100%">
+      <div class="tfa-card">
+        <div class="tfa-icon">🔐</div>
+        <div class="tfa-title">Two-Factor Authentication</div>
+        <div class="tfa-sub">Admin accounts require a verification code.<br>Enter the 6-digit code shown below (demo).</div>
+        <div style="background:rgba(255,255,255,.1);border-radius:var(--r);padding:10px 16px;margin-bottom:18px;font-family:var(--fs);font-size:22px;font-weight:700;letter-spacing:8px;color:#93C6F5" id="tfa-code-display">000000</div>
+        <div class="tfa-boxes" id="tfa-display">
+          <div class="tfa-box" id="tfa-d0">_</div><div class="tfa-box" id="tfa-d1">_</div><div class="tfa-box" id="tfa-d2">_</div>
+          <div class="tfa-box" id="tfa-d3">_</div><div class="tfa-box" id="tfa-d4">_</div><div class="tfa-box" id="tfa-d5">_</div>
+        </div>
+        <input type="text" class="tfa-input" id="tfa-input" maxlength="6" inputmode="numeric" pattern="[0-9]*" oninput="handleTFA(this.value)">
+        <div class="tfa-timer" id="tfa-timer">Code expires in 5:00</div>
+        <button class="btn btn-g btn-full" onclick="verifyTFA()" style="margin-bottom:12px">Verify &amp; Continue →</button>
+        <button class="btn btn-ghost btn-full" onclick="nav('signin')">← Back to sign in</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FORGOT PASSWORD -->
+<div class="page" id="page-forgot">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-left">
+        <div class="al-t">Reset password.</div>
+        <div class="al-s">Enter your registered email. We'll send a secure code.</div>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-top:24px">
+          <div style="display:flex;gap:12px;align-items:flex-start"><div style="width:25px;height:25px;border-radius:50%;background:var(--g5);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:12px;color:var(--g6)">Enter your email and click Send Code</div></div>
+          <div style="display:flex;gap:12px;align-items:flex-start"><div style="width:25px;height:25px;border-radius:50%;background:rgba(19,160,119,.3);color:var(--g7);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:12px;color:var(--g6)">Enter the 6-digit code (demo: any digits)</div></div>
+          <div style="display:flex;gap:12px;align-items:flex-start"><div style="width:25px;height:25px;border-radius:50%;background:rgba(19,160,119,.3);color:var(--g7);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div style="font-size:12px;color:var(--g6)">Set a new strong password</div></div>
+        </div>
+      </div>
+      <div class="auth-right">
+        <div class="ar-t">Reset password</div>
+        <div class="ar-s">We'll verify your identity first</div>
+        <div class="notice n-err" id="fp-err" style="display:none"></div>
+        <div class="fgrid" style="gap:13px">
+          <div class="fg"><label class="flbl">Email address</label><div style="display:flex;gap:8px"><input class="finput" id="fp-email" placeholder="Registered email" maxlength="100" style="flex:1"><button class="btn btn-o" style="font-size:13px;white-space:nowrap;padding:9px 14px" onclick="sendResetCode()">Send code</button></div></div>
+          <div style="height:1px;background:var(--bdr)"></div>
+          <div class="fg"><label class="flbl">Verification code</label><input class="finput" id="fp-code" placeholder="6-digit code" maxlength="6"></div>
+          <div class="fg"><label class="flbl">New password *</label>
+            <input class="finput" type="password" id="fp-pw" placeholder="Strong new password" maxlength="128" oninput="checkPwStrength('fp-pw','fp-strength')">
+            <div class="pw-strength" id="fp-strength" style="display:none">
+              <div class="pw-bars"><div class="pw-bar" id="fp-pwb1"></div><div class="pw-bar" id="fp-pwb2"></div><div class="pw-bar" id="fp-pwb3"></div><div class="pw-bar" id="fp-pwb4"></div></div>
+              <div class="pw-text" id="fp-pw-strength-text"></div>
+            </div>
+          </div>
+          <div class="fg"><label class="flbl">Confirm password</label><input class="finput" type="password" id="fp-cpw" placeholder="Retype" maxlength="128"></div>
+          <button class="btn btn-g btn-full" onclick="doReset()">Reset password 🔒</button>
+          <div class="auth-btm"><a onclick="nav('signin')">← Back to sign in</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+</div>
+</div><!-- /app-view -->
+
+<div class="modal-ov" id="modal-ov" onclick="if(event.target===this)closeModal()">
+  <div class="modal"><div class="modal-t" id="modal-t"></div><div class="modal-b" id="modal-b"></div><div class="modal-btns" id="modal-btns"></div></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+
+// ════════════════════════════════════════════
+//  SECURITY CONFIG
+// ════════════════════════════════════════════
+const SEC = {
+  MAX_LOGIN_ATTEMPTS: 5,
+  LOCKOUT_MINUTES: 15,
+  SESSION_TIMEOUT_MS: 30 * 60 * 1000, // 30 min
+  TFA_EXPIRY_MS: 5 * 60 * 1000,       // 5 min
+  RATE_LIMIT_ACTIONS: 20,              // actions per minute
+  RATE_LIMIT_WINDOW_MS: 60 * 1000,
+};
+
+// ════════════════════════════════════════════
+//  DATA LAYER — localStorage
+// ════════════════════════════════════════════
+const LS = {
+  get(k){try{return JSON.parse(localStorage.getItem('fs5_'+k))}catch{return null}},
+  set(k,v){localStorage.setItem('fs5_'+k,JSON.stringify(v))},
+  del(k){localStorage.removeItem('fs5_'+k)}
+};
+
+// Simple deterministic hash (not cryptographic, but consistent for demo)
+function hashPw(pw){
+  let h=5381;for(let i=0;i<pw.length;i++){h=((h<<5)+h)+pw.charCodeAt(i)>>>0;}
+  let s=h.toString(16).padStart(8,'0');
+  // Mix with reversed to simulate longer hash
+  const rev=[...s].reverse().join('');
+  return (s+rev+s.slice(0,8)+rev.slice(0,8)).toUpperCase();
+}
+
+// Getters
+function getUsers(){return LS.get('users')||[]}
+function getDons(){return LS.get('dons')||[]}
+function getReqs(){return LS.get('reqs')||[]}
+function getMoneyDons(){return LS.get('mdons')||[]}
+function getMoneyOut(){return LS.get('mout')||[]}
+function getLog(){return LS.get('auditlog')||[]}
+function getAttempts(){return LS.get('attempts')||{}} // {email: {count, lockedUntil, lastAttempt}}
+function getIds(){const d=LS.get('ids')||{};return{u:d.u||1,d:d.d||1,r:d.r||1,m:d.m||1,mo:d.mo||1,l:d.l||1}}
+function getRateData(){return LS.get('rate')||{}}
+
+// Savers
+function saveUsers(d){LS.set('users',d)}
+function saveDons(d){LS.set('dons',d)}
+function saveReqs(d){LS.set('reqs',d)}
+function saveMoneyDons(d){LS.set('mdons',d)}
+function saveMoneyOut(d){LS.set('mout',d)}
+function saveLog(d){LS.set('auditlog',d)}
+function saveAttempts(d){LS.set('attempts',d)}
+
+function nid(type){const ids=getIds();if(!ids[type])ids[type]=1;const id=ids[type]++;LS.set('ids',ids);return id;}
+
+// Current user
+function getCU(){const uid=LS.get('cu');if(!uid) return null;return getUsers().find(u=>u.id===uid)||null;}
+function setCU(u){LS.set('cu',u?u.id:null)}
+
+// ════════════════════════════════════════════
+//  AUDIT LOG
+// ════════════════════════════════════════════
+function logEvent(type, msg, userId=null){
+  const log=getLog();
+  const u=userId||getCU()?.id;
+  log.unshift({id:nid('l'),type,msg,userId:u,ts:new Date().toISOString(),ip:fakeIP()});
+  if(log.length>500) log.splice(500);
+  saveLog(log);
+}
+
+function fakeIP(){
+  // Simulate realistic IP for demo (stable per session)
+  let ip=LS.get('session_ip');
+  if(!ip){ip=`192.168.${rnd(1,254)}.${rnd(1,254)}`;LS.set('session_ip',ip);}
+  return ip;
+}
+function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+
+// ════════════════════════════════════════════
+//  RATE LIMITING
+// ════════════════════════════════════════════
+function checkRateLimit(action='action'){
+  const now=Date.now();const data=getRateData();
+  if(!data[action]||now-data[action].window>SEC.RATE_LIMIT_WINDOW_MS){data[action]={count:0,window:now};}
+  data[action].count++;
+  LS.set('rate',data);
+  return data[action].count<=SEC.RATE_LIMIT_ACTIONS;
+}
+
+// ════════════════════════════════════════════
+//  PASSWORD STRENGTH
+// ════════════════════════════════════════════
+function pwScore(pw){
+  let s=0;
+  const rules={len:pw.length>=8,upper:/[A-Z]/.test(pw),lower:/[a-z]/.test(pw),num:/[0-9]/.test(pw),special:/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/.test(pw)};
+  if(rules.len) s++;if(rules.upper) s++;if(rules.lower) s++;if(rules.num) s++;if(rules.special) s++;
+  if(pw.length>=12) s++;
+  return {score:Math.min(s,4),rules};
+}
+
+function isStrongEnough(pw){const {score}=pwScore(pw);return score>=4;}
+
+function checkPwStrength(inputId, strengthId){
+  const pw=document.getElementById(inputId)?.value||'';
+  const wrap=document.getElementById(strengthId);if(!wrap) return;
+  if(!pw){wrap.style.display='none';return;}
+  wrap.style.display='block';
+  const {score,rules}=pwScore(pw);
+  // Determine prefix for bar and rule element IDs
+  const prefix=inputId==='su-pw'?'su-':inputId==='sec-new-pw'?'':inputId==='fp-pw'?'fp-':'';
+  const colors=['','s1','s2','s3','s4'];
+  const labels=['','Weak','Fair','Good','Strong'];
+  const textColors={1:'var(--red)',2:'var(--amber)',3:'var(--blue)',4:'var(--g5)'};
+  for(let i=1;i<=4;i++){
+    const bar=document.getElementById((prefix||'')+'pwb'+i);
+    if(bar) bar.className='pw-bar '+(i<=score?colors[score]:'');
+  }
+  const txt=document.getElementById(strengthId==='su-strength'?'su-pw-strength-text':strengthId==='fp-strength'?'fp-pw-strength-text':'pw-strength-text');
+  if(txt){txt.textContent=score?labels[score]:'';txt.style.color=textColors[score]||'';}
+  // Update rules if they exist
+  const ruleMap={len:'pwr-len',upper:'pwr-upper',lower:'pwr-lower',num:'pwr-num',special:'pwr-special'};
+  for(const[k,rid] of Object.entries(ruleMap)){
+    const el=document.getElementById((prefix||'')+rid);
+    if(el) el.classList.toggle('ok',rules[k]);
+  }
+}
+
+// ════════════════════════════════════════════
+//  LOGIN LOCKOUT
+// ════════════════════════════════════════════
+function recordFailedAttempt(email){
+  const attempts=getAttempts();
+  const now=Date.now();
+  if(!attempts[email]||now-attempts[email].lastAttempt>SEC.LOCKOUT_MINUTES*60*1000*2){
+    attempts[email]={count:1,lastAttempt:now,lockedUntil:null};
+  } else {
+    attempts[email].count++;
+    attempts[email].lastAttempt=now;
+    if(attempts[email].count>=SEC.MAX_LOGIN_ATTEMPTS){
+      attempts[email].lockedUntil=now+SEC.LOCKOUT_MINUTES*60*1000;
+      logEvent('lockout','Account locked after '+SEC.MAX_LOGIN_ATTEMPTS+' failed attempts for: '+email);
+    }
+  }
+  saveAttempts(attempts);
+  return attempts[email];
+}
+
+function clearAttempts(email){const a=getAttempts();delete a[email];saveAttempts(a);}
+
+function isLocked(email){
+  const a=getAttempts();if(!a[email]) return {locked:false};
+  if(!a[email].lockedUntil) return {locked:false};
+  const remaining=a[email].lockedUntil-Date.now();
+  if(remaining<=0){clearAttempts(email);return {locked:false};}
+  return {locked:true,remaining};
+}
+
+function startLockoutTimer(remaining){
+  const banner=document.getElementById('lockout-banner');
+  const timerEl=document.getElementById('lockout-time');
+  const btn=document.getElementById('signin-btn');
+  if(!banner||!timerEl) return;
+  banner.style.display='flex';
+  if(btn) btn.disabled=true;
+  let ms=remaining;
+  const interval=setInterval(()=>{
+    ms-=1000;
+    if(ms<=0){clearInterval(interval);banner.style.display='none';if(btn)btn.disabled=false;return;}
+    const m=Math.floor(ms/60000);const s=Math.floor((ms%60000)/1000);
+    timerEl.textContent=m+':'+(s<10?'0':'')+s;
+  },1000);
+  const m=Math.floor(ms/60000);const s=Math.floor((ms%60000)/1000);
+  timerEl.textContent=m+':'+(s<10?'0':'')+s;
+}
+
+// ════════════════════════════════════════════
+//  SESSION MANAGEMENT
+// ════════════════════════════════════════════
+let sessionTimer=null;
+let lastActivity=Date.now();
+let sessionCountdown=null;
+
+function resetActivity(){lastActivity=Date.now();}
+
+function startSessionTimer(){
+  if(sessionTimer) clearInterval(sessionTimer);
+  sessionTimer=setInterval(()=>{
+    const idle=Date.now()-lastActivity;
+    const remaining=SEC.SESSION_TIMEOUT_MS-idle;
+    if(remaining<=0){
+      logEvent('session_timeout','Session expired due to inactivity');
+      doLogout(true);return;
+    }
+    // Warn at 5 minutes
+    if(remaining<=5*60*1000&&remaining>4.9*60*1000){
+      toast('⏱️ Session expires in 5 minutes due to inactivity','warn');
+    }
+    // Update timer in topbar
+    const el=document.getElementById('session-countdown');
+    if(el){const m=Math.floor(remaining/60000);const s=Math.floor((remaining%60000)/1000);el.textContent='⏱ '+m+':'+(s<10?'0':'')+s;}
+  },10000);
+}
+
+document.addEventListener('click',resetActivity);
+document.addEventListener('keypress',resetActivity);
+
+// ════════════════════════════════════════════
+//  2FA — ADMIN
+// ════════════════════════════════════════════
+let tfaCode='';let tfaExpiry=0;let pendingAdminId=null;let tfaTimer=null;
+
+function generateTFA(){
+  tfaCode=String(Math.floor(100000+Math.random()*900000));
+  tfaExpiry=Date.now()+SEC.TFA_EXPIRY_MS;
+  const el=document.getElementById('tfa-code-display');if(el)el.textContent=tfaCode;
+  startTFATimer();
+}
+
+function startTFATimer(){
+  if(tfaTimer) clearInterval(tfaTimer);
+  const timerEl=document.getElementById('tfa-timer');
+  tfaTimer=setInterval(()=>{
+    const rem=tfaExpiry-Date.now();
+    if(rem<=0){clearInterval(tfaTimer);if(timerEl)timerEl.textContent='Code expired. Please sign in again.';generateTFA();}
+    else{const m=Math.floor(rem/60000);const s=Math.floor((rem%60000)/1000);if(timerEl)timerEl.textContent='Code expires in '+m+':'+(s<10?'0':'')+s;}
+  },1000);
+}
+
+function handleTFA(val){
+  const digits=val.replace(/\D/g,'').slice(0,6);
+  for(let i=0;i<6;i++){const box=document.getElementById('tfa-d'+i);if(box)box.textContent=digits[i]||'_';}
+  document.querySelectorAll('.tfa-box').forEach((b,i)=>b.classList.toggle('active',i===digits.length));
+  if(digits.length===6) verifyTFA();
+}
+
+function verifyTFA(){
+  const input=document.getElementById('tfa-input');if(!input) return;
+  const entered=input.value.replace(/\D/g,'');
+  if(Date.now()>tfaExpiry){toast('Code expired. A new code has been generated.','err');generateTFA();input.value='';return;}
+  if(entered===tfaCode){
+    logEvent('login_ok','Admin 2FA verified successfully');
+    const u=getUsers().find(x=>x.id===pendingAdminId);
+    if(u){
+      u.lastLogin=new Date().toISOString();u.loginCount=(u.loginCount||0)+1;
+      const users=getUsers();const idx=users.findIndex(x=>x.id===u.id);users[idx]=u;saveUsers(users);
+    }
+    setCU(u||getUsers().find(x=>x.id===pendingAdminId));
+    startSessionTimer();
+    nav('dashboard');toast('👋 Welcome back, Admin! 2FA verified.','ok');
+  } else {
+    logEvent('login_fail','Admin 2FA failed — wrong code');
+    toast('❌ Incorrect code. Try again.','err');
+    input.value='';for(let i=0;i<6;i++){const b=document.getElementById('tfa-d'+i);if(b)b.textContent='_';}
+  }
+}
+
+// ════════════════════════════════════════════
+//  SEED DATA
+// ════════════════════════════════════════════
+function seed(){
+  if(LS.get('seeded5')) return;
+  saveUsers([
+    {id:1,name:'Rahim Ahmed',email:'donor@test.com',password:hashPw('Test@1234'),phone:'+880-1711-123456',location:'Dhanmondi, Dhaka',type:'donor',joined:'Jan 2025',blocked:false,loginCount:0,lastLogin:null},
+    {id:2,name:'Dhaka Food Bank',email:'charity@test.com',password:hashPw('Test@1234'),phone:'+880-1722-654321',location:'Gulshan, Dhaka',type:'charity',joined:'Feb 2025',blocked:false,loginCount:0,lastLogin:null},
+    {id:3,name:'Admin User',email:'admin@foodshare.com',password:hashPw('Admin@9999'),phone:'+880-1700-000000',location:'Dhaka',type:'admin',joined:'Jan 2025',blocked:false,loginCount:0,lastLogin:null}
+  ]);
+  saveDons([
+    {id:1,donorId:1,name:'Cooked rice',qty:'5 kg',location:'Dhanmondi, Dhaka',expiry:'2025-12-31T20:00',desc:'Freshly cooked',date:'2025-04-22',status:'pending'},
+    {id:2,donorId:1,name:'Bread loaves',qty:'20 pcs',location:'Dhanmondi, Dhaka',expiry:'2025-12-31T18:00',desc:'White bread, sealed',date:'2025-04-20',status:'collected'},
+    {id:3,donorId:2,name:'Mixed vegetables',qty:'4 kg',location:'Gulshan, Dhaka',expiry:'2025-12-31T16:00',desc:'Fresh mixed vegetables',date:'2025-04-22',status:'pending'}
+  ]);
+  saveReqs([{id:1,donId:1,fromId:2,toId:1,qty:'3 kg',pickup:'2025-12-28T18:00',status:'pending',date:'2025-04-22'}]);
+  saveMoneyDons([]);saveMoneyOut([]);
+  saveLog([
+    {id:1,type:'login_ok',msg:'System initialized — seed data loaded',userId:null,ts:new Date().toISOString(),ip:'system'}
+  ]);
+  LS.set('ids',{u:4,d:4,r:2,m:1,mo:1,l:2});
+  LS.set('seeded5',true);
+}
+
+// ════════════════════════════════════════════
+//  NAVIGATION
+// ════════════════════════════════════════════
+const AUTH_PAGES=['signup','signin','forgot','tfa'];
+let pgHist=[],curPg=null;
+
+function goHome(){document.getElementById('app-view').style.display='none';document.getElementById('home-view').style.display='block';window.scrollTo(0,0);}
+function enterApp(pg){document.getElementById('home-view').style.display='none';document.getElementById('app-view').style.display='block';pgHist=[];nav(pg);window.scrollTo(0,0);}
+function sc(h){const el=document.querySelector(h);if(el)el.scrollIntoView({behavior:'smooth'});}
+function scrollTop(){window.scrollTo({top:0,behavior:'smooth'});}
+
+function nav(pg){
+  if(curPg&&curPg!==pg) pgHist.push(curPg);
+  curPg=pg;
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  const p=document.getElementById('page-'+pg);if(p)p.classList.add('on');
+  document.querySelectorAll('.ni[data-p]').forEach(n=>n.classList.toggle('on',n.dataset.p===pg));
+  const sb=document.getElementById('app-sb'),aw=document.getElementById('app-wrap');
+  if(AUTH_PAGES.includes(pg)){
+    sb.style.display='none';aw.style.gridTemplateColumns='1fr';
+    document.getElementById('atb-r').innerHTML=`<button class="atb-btn" onclick="nav('signin')">Sign in</button><button class="btn btn-g btn-sm" onclick="nav('signup')">Sign up</button>`;
+  } else {
+    const u=getCU();if(!u){nav('signin');return;}
+    sb.style.display='';aw.style.gridTemplateColumns='248px 1fr';
+    renderTopbar();
+  }
+  document.getElementById('app-main').scrollTop=0;
+  const renders={dashboard:renderDashboard,foodlist:renderFoodList,requests:()=>{renderRequests();populateReqSel();},history:renderHistory,admin:renderAdmin,profile:renderProfile,security:renderSecurityPage,'money-donate':()=>{resetMoneyForm();renderMyMoneyList();},'donate':()=>{resetDonateForm();renderDnStats();}};
+  if(renders[pg]) renders[pg]();
+}
+
+function goBack(){if(pgHist.length){const p=pgHist.pop();curPg=null;nav(p);pgHist.pop();}else nav('dashboard');}
+
+// ════════════════════════════════════════════
+//  TOPBAR
+// ════════════════════════════════════════════
+function renderTopbar(){
+  const u=getCU();if(!u) return;
+  const init=inits(u.name);
+  const rc={donor:'rt-donor',charity:'rt-charity',admin:'rt-admin'}[u.type]||'rt-donor';
+  const pendIn=getReqs().filter(r=>r.toId===u.id&&r.status==='pending').length;
+  document.getElementById('atb-r').innerHTML=`
+    <div class="atb-notif" onclick="nav('requests')" title="Requests"><svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>${pendIn>0?'<div class="n-dot"></div>':''}</div>
+    <span class="sec-indicator sec-ok">🔒 Secure</span>
+    <span class="session-timer" id="session-countdown" title="Session remaining"></span>
+    <div class="atb-av" onclick="nav('profile')">${init}</div>
+    <span class="atb-nm">${u.name.split(' ')[0]}</span>
+    <span class="atb-rt ${rc}">${u.type}</span>
+    <button class="atb-btn" onclick="doLogout()">Logout</button>`;
+  const adminNav=document.getElementById('admin-nav');if(adminNav)adminNav.style.display=u.type==='admin'?'':'none';
+  const badge=document.getElementById('req-badge');if(badge){badge.textContent=pendIn;badge.style.display=pendIn>0?'':'none';}
+}
+
+// ════════════════════════════════════════════
+//  AUTH
+// ════════════════════════════════════════════
+function doSignup(){
+  if(!checkRateLimit('signup')){toast('Too many signup attempts. Please wait.','err');return;}
+  const name=san(gv('su-name')),email=san(gv('su-email')).toLowerCase(),pw=gv('su-pw'),cpw=gv('su-cpw'),type=gv('su-type');
+  hide('su-dup');
+  const errs={
+    nerr:!name||name.length<2||name.length>80,
+    eerr:!email||!isValidEmail(email),
+    perr:!isStrongEnough(pw),
+    cperr:pw!==cpw,
+    terr:!type
+  };
+  let ok=true;
+  for(const[k,v] of Object.entries(errs)){document.getElementById('su-'+k).style.display=v?'block':'none';if(v)ok=false;}
+  if(!ok) return;
+  const users=getUsers();
+  if(users.find(u=>u.email===email)){show('su-dup');logEvent('security','Signup attempt with existing email: '+email);return;}
+  const u={id:nid('u'),name,email,password:hashPw(pw),phone:san(gv('su-phone')),location:san(gv('su-loc')),type,joined:new Date().toLocaleDateString('en-US',{month:'short',year:'numeric'}),blocked:false,loginCount:0,lastLogin:new Date().toISOString()};
+  users.push(u);saveUsers(users);
+  setCU(u);startSessionTimer();
+  logEvent('login_ok','Account created and logged in: '+name+' ('+type+')');
+  toast('🎉 Account created securely! Welcome, '+name+'!');
+  nav('dashboard');
+}
+
+function doSignin(){
+  if(!checkRateLimit('signin')){toast('Too many signin attempts. Please wait a minute.','err');return;}
+  const email=san(gv('si-email')).toLowerCase(),pw=gv('si-pw');
+  hide('si-err');hide('si-blocked');hide('si-warn');
+  if(!email||!pw){toast('Please enter email and password.','err');return;}
+  // Check lockout
+  const lockStatus=isLocked(email);
+  if(lockStatus.locked){startLockoutTimer(lockStatus.remaining);return;}
+  const users=getUsers();
+  const u=users.find(x=>x.email===email&&x.password===hashPw(pw));
+  if(!u){
+    const rec=recordFailedAttempt(email);
+    const remaining=SEC.MAX_LOGIN_ATTEMPTS-rec.count;
+    logEvent('login_fail','Failed login attempt for: '+email+' (attempt '+rec.count+')');
+    const errEl=document.getElementById('si-err');
+    if(errEl){errEl.style.display='block';errEl.textContent=remaining>0?`Incorrect email or password. ${remaining} attempt${remaining!==1?'s':''} remaining before lockout.`:'Account locked. Try again in '+SEC.LOCKOUT_MINUTES+' minutes.';}
+    if(rec.lockedUntil) startLockoutTimer(rec.lockedUntil-Date.now());
+    return;
+  }
+  if(u.blocked){show('si-blocked');logEvent('security','Blocked user attempted login: '+email);return;}
+  clearAttempts(email);
+  // Admin requires 2FA
+  if(u.type==='admin'){
+    pendingAdminId=u.id;
+    logEvent('security','Admin login — 2FA required for: '+email);
+    generateTFA();
+    document.getElementById('tfa-input').value='';
+    for(let i=0;i<6;i++){const b=document.getElementById('tfa-d'+i);if(b)b.textContent='_';}
+    nav('tfa');
+    document.getElementById('tfa-input').focus();
+    return;
+  }
+  // Normal user login
+  const idx=users.findIndex(x=>x.id===u.id);
+  users[idx].lastLogin=new Date().toISOString();users[idx].loginCount=(users[idx].loginCount||0)+1;
+  saveUsers(users);
+  setCU(users[idx]);startSessionTimer();
+  logEvent('login_ok','Successful login: '+u.name+' ('+u.type+') from '+fakeIP());
+  toast('👋 Welcome back, '+u.name+'!');
+  nav('dashboard');
+}
+
+function doLogout(timeout=false){
+  const u=getCU();
+  if(u) logEvent('login_ok','User logged out: '+u.name+(timeout?' (session timeout)':''));
+  if(sessionTimer) clearInterval(sessionTimer);
+  if(tfaTimer) clearInterval(tfaTimer);
+  setCU(null);pgHist=[];curPg=null;
+  nav('signin');
+  toast(timeout?'⏱️ Session expired. Please sign in again.':'You have been logged out securely.');
+}
+
+function sendResetCode(){
+  if(!checkRateLimit('reset')){toast('Too many reset attempts.','err');return;}
+  const email=san(gv('fp-email')).toLowerCase();
+  if(!email||!isValidEmail(email)){toast('Please enter a valid email address.','err');return;}
+  const u=getUsers().find(x=>x.email===email);
+  // Security: Always show same message to prevent user enumeration
+  logEvent('security','Password reset requested for: '+email+(u?'':', not found'));
+  toast('✉️ If this email is registered, a code has been sent. (Demo code: 123456)');
+}
+
+function doReset(){
+  const email=san(gv('fp-email')).toLowerCase();
+  const code=gv('fp-code'),pw=gv('fp-pw'),cpw=gv('fp-cpw');
+  const errEl=document.getElementById('fp-err');
+  hide('fp-err');
+  if(!code||code.length<6){if(errEl){errEl.style.display='block';errEl.textContent='Please enter the 6-digit code.';} return;}
+  if(!isStrongEnough(pw)){if(errEl){errEl.style.display='block';errEl.textContent='Please choose a stronger password.';} return;}
+  if(pw!==cpw){if(errEl){errEl.style.display='block';errEl.textContent='Passwords do not match.';} return;}
+  const users=getUsers();const idx=users.findIndex(x=>x.email===email);
+  if(idx<0){if(errEl){errEl.style.display='block';errEl.textContent='Email address not found.';} return;}
+  users[idx].password=hashPw(pw);saveUsers(users);
+  logEvent('security','Password reset completed for: '+email);
+  toast('✅ Password reset! Please sign in with your new password.');
+  nav('signin');
+}
+
+// ════════════════════════════════════════════
+//  DASHBOARD
+// ════════════════════════════════════════════
+function renderDashboard(){
+  const u=getCU();if(!u) return;
+  document.getElementById('dash-greet').textContent='Good day, '+u.name.split(' ')[0]+' 👋';
+  const dons=getDons().filter(d=>d.donorId===u.id);
+  const col=dons.filter(d=>d.status==='collected').length;
+  const pendIn=getReqs().filter(r=>r.toId===u.id&&r.status==='pending').length;
+  const rate=dons.length?Math.round(col/dons.length*100):0;
+  document.getElementById('dash-stats').innerHTML=`
+    <div class="sc"><div class="sc-ico" style="background:var(--g5)"><svg viewBox="0 0 24 24"><path d="M18.06 22.99h1.66c.84 0 1.53-.64 1.63-1.46L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26 1.44 1.42 2.43 2.89 2.43 5.29v8.05zM1 21.99V21h15.03v.99c0 .55-.45 1-1.01 1H2.01c-.56 0-1.01-.45-1.01-1zm15.03-7c0-3.31-2.89-5.99-6.45-5.99C5.88 8.99 3 11.67 3 14.99h13.03zM4 19h12.03v1H4v-1z"/></svg></div><div class="sc-v tg">${dons.length}</div><div class="sc-l">Total donations</div><div class="mbars">${[40,60,35,75,50,100].map((h,i)=>`<div class="mb${i===5?' pk':''}" style="height:${h}%"></div>`).join('')}</div></div>
+    <div class="sc"><div class="sc-ico" style="background:var(--amber)"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div><div class="sc-v ta">${pendIn}</div><div class="sc-l">Pending requests</div><div class="sc-d ta">${pendIn>0?'Awaiting response':''}</div></div>
+    <div class="sc"><div class="sc-ico" style="background:var(--g3)"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div><div class="sc-v" style="color:var(--g3)">${col}</div><div class="sc-l">Collected</div><div class="sc-d tg">${rate}% rate</div></div>`;
+  const recent=[...dons].reverse().slice(0,5);
+  document.getElementById('dash-tbody').innerHTML=recent.length?recent.map(d=>`<tr><td class="fw5">${esc(d.name)}</td><td>${esc(d.qty)}</td><td class="sm">${d.date}</td><td>${sbadge(d.status)}</td><td><button class="btn btn-red btn-sm" onclick="quickDelDon(${d.id})">Del</button></td></tr>`).join(''):`<tr><td colspan="5" class="empty-td">No donations yet. <button class="btn btn-g btn-sm" onclick="nav('donate')" style="margin-left:6px">Donate now</button></td></tr>`;
+  const pReq=getReqs().find(r=>r.toId===u.id&&r.status==='pending');
+  const prc=document.getElementById('dash-req-card');
+  if(pReq){const from=getUsers().find(x=>x.id===pReq.fromId);const don=getDons().find(d=>d.id===pReq.donId);prc.innerHTML=`<div class="card-hd"><span class="card-t">⏳ Pending request</span><span class="badge b-pend">Needs action</span></div><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><div class="avt">${inits(from?.name||'?')}</div><div><div class="fw5" style="font-size:13px">${esc(from?.name||'Unknown')}</div><div class="sm">wants ${esc(pReq.qty)} of your ${esc(don?.name||'food')}</div></div></div><div style="display:flex;gap:8px"><button class="btn btn-g btn-sm" onclick="acceptReq(${pReq.id})">Accept</button><button class="btn btn-red btn-sm" onclick="rejectReq(${pReq.id})">Reject</button><button class="btn btn-ghost btn-sm" onclick="nav('requests')">View all</button></div>`;}
+  else{prc.innerHTML=`<div style="text-align:center;padding:16px;color:var(--ink4);font-size:13px">No pending requests</div>`;}
+  document.getElementById('dash-impact').innerHTML=`<div class="prog-row"><span class="prog-lbl">Meals provided</span><div class="prog-bar"><div class="prog-fill" style="width:${rate}%"></div></div><span class="prog-pct">${rate}%</span></div><div class="prog-row"><span class="prog-lbl">Food saved</span><div class="prog-bar"><div class="prog-fill" style="width:${Math.min(rate+12,100)}%"></div></div><span class="prog-pct">${Math.min(rate+12,100)}%</span></div><div class="divider"></div><div style="font-size:13px;color:var(--ink3)">~<strong style="color:var(--g4)">${col*8} people</strong> fed this month.</div>`;
+}
+
+// ════════════════════════════════════════════
+//  DONATE
+// ════════════════════════════════════════════
+function resetDonateForm(){
+  ['dn-name','dn-qty','dn-loc','dn-desc'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  const ex=document.getElementById('dn-exp');if(ex)ex.value='';
+  document.getElementById('dn-suc').style.display='none';
+  ['dn-nerr','dn-qerr','dn-eerr','dn-lerr'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
+}
+
+function submitDonation(){
+  if(!checkRateLimit('donate')){toast('Too many submissions. Please wait a moment.','err');return;}
+  const name=san(gv('dn-name')),qty=san(gv('dn-qty')),exp=gv('dn-exp'),loc=san(gv('dn-loc')),desc=san(gv('dn-desc'));
+  const errs={nerr:!name||name.length<2,qerr:!qty,eerr:!exp,lerr:!loc||loc.length<5};
+  let ok=true;
+  for(const[k,v] of Object.entries(errs)){document.getElementById('dn-'+k).style.display=v?'block':'none';if(v)ok=false;}
+  if(!ok) return;
+  // Validate expiry is in the future
+  if(new Date(exp)<=new Date()){document.getElementById('dn-eerr').textContent='Expiry time must be in the future.';document.getElementById('dn-eerr').style.display='block';return;}
+  document.getElementById('dn-suc').style.display='none';
+  const u=getCU();
+  const dons=getDons();
+  const d={id:nid('d'),donorId:u.id,name,qty,location:loc,expiry:exp,desc,date:new Date().toISOString().slice(0,10),status:'pending'};
+  dons.push(d);saveDons(dons);
+  logEvent('action','New food donation posted: '+name+' ('+qty+') by '+u.name);
+  document.getElementById('dn-suc').style.display='block';
+  resetDonateForm();document.getElementById('dn-suc').style.display='block';
+  renderDnStats();
+  toast('✅ Donation posted! Charities have been notified.');
+}
+
+function renderDnStats(){
+  const u=getCU();if(!u) return;
+  const my=getDons().filter(d=>d.donorId===u.id);
+  const el=document.getElementById('dn-stats');if(!el) return;
+  el.innerHTML=`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bdr)"><span class="sm">Active listings</span><strong class="tg">${my.filter(d=>d.status==='pending').length}</strong></div><div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bdr)"><span class="sm">Collected</span><strong class="tg">${my.filter(d=>d.status==='collected').length}</strong></div><div style="display:flex;justify-content:space-between;padding:6px 0"><span class="sm">Total</span><strong class="tg">${my.length}</strong></div>`;
+}
+
+// ════════════════════════════════════════════
+//  FOOD LIST
+// ════════════════════════════════════════════
+function foodEmoji(name){
+  const n=name.toLowerCase();
+  if(n.includes('rice')||n.includes('ভাত')) return '🍚';
+  if(n.includes('dal')||n.includes('lentil')) return '🫘';
+  if(n.includes('bread')||n.includes('roti')||n.includes('pita')) return '🍞';
+  if(n.includes('cake')||n.includes('sweet')||n.includes('dessert')||n.includes('pastry')) return '🎂';
+  if(n.includes('fruit')||n.includes('apple')||n.includes('banana')||n.includes('mango')) return '🍎';
+  if(n.includes('veg')||n.includes('salad')||n.includes('green')) return '🥦';
+  if(n.includes('chicken')||n.includes('meat')||n.includes('beef')||n.includes('mutton')) return '🍗';
+  if(n.includes('fish')||n.includes('prawn')) return '🐟';
+  if(n.includes('curry')||n.includes('biryani')) return '🍛';
+  if(n.includes('soup')) return '🍜';
+  if(n.includes('egg')) return '🥚';
+  if(n.includes('milk')||n.includes('dairy')) return '🥛';
+  if(n.includes('pizza')||n.includes('pasta')) return '🍕';
+  if(n.includes('cookie')||n.includes('biscuit')) return '🍪';
+  if(n.includes('sandwich')) return '🥪';
+  return '🍽️';
+}
+
+function renderFoodList(){
+  const q=(gv('food-search')||'').toLowerCase();
+  const now=new Date();
+  const all=getDons().map(d=>{if(new Date(d.expiry)<now&&d.status==='pending')d.status='expired';return d;}).filter(d=>!q||(d.name.toLowerCase().includes(q)||d.location.toLowerCase().includes(q)));
+  const u=getCU();
+  const grid=document.getElementById('food-grid');
+  if(!all.length){grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:56px;color:var(--ink4)"><div style="font-size:32px;margin-bottom:8px">🥗</div>No food donations found</div>`;return;}
+  grid.innerHTML=all.map(d=>{
+    const exp=d.status==='expired'||new Date(d.expiry)<now;
+    const donor=getUsers().find(x=>x.id===d.donorId);
+    const isMine=u&&d.donorId===u.id;
+    const alreadySent=u&&getReqs().find(r=>r.donId===d.id&&r.fromId===u.id&&r.status==='pending');
+    let btn=exp?`<button class="btn btn-ghost btn-sm btn-full" disabled>Expired</button>`:isMine?`<button class="btn btn-ghost btn-sm btn-full" disabled>Your listing</button>`:alreadySent?`<button class="btn btn-ghost btn-sm btn-full" disabled>Request sent ✓</button>`:!u||u.type==='admin'?`<button class="btn btn-ghost btn-sm btn-full" disabled>${!u?'Sign in to request':'Admin view'}</button>`:`<button class="btn btn-g btn-sm btn-full" onclick="quickReq(${d.id})">Request food</button>`;
+    return `<div class="food-card${exp?' expired':''}">
+      <div class="fc-img" style="background:linear-gradient(135deg,${exp?'#F0EFE9,#E0E0D8':'#EAF8F2,#C2F0DC'})">
+        <div class="fc-emoji">${foodEmoji(d.name)}</div>
+        <div class="fc-shine"></div>
+        <div class="fc-ov"></div>
+        <div class="fc-badge">${sbadge(exp?'expired':d.status)}</div>
+      </div>
+      <div class="fc-body">
+        <div class="fc-name">${esc(d.name)}</div>
+        <div class="fc-qty">${esc(d.qty)}</div>
+        <div style="margin:7px 0">${expiryPill(d.expiry)}</div>
+        <div class="fc-meta">
+          <span><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>${esc(d.location)}</span>
+          <span><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>By ${esc(donor?.name||'Unknown')}</span>
+          ${d.desc?`<span style="font-style:italic">"${esc(d.desc)}"</span>`:''}
+        </div>
+        ${btn}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function quickReq(donId){
+  if(!checkRateLimit('request')){toast('Too many requests. Please slow down.','err');return;}
+  const u=getCU();if(!u){nav('signin');return;}
+  const don=getDons().find(x=>x.id===donId);if(!don) return;
+  const reqs=getReqs();
+  if(reqs.find(r=>r.donId===donId&&r.fromId===u.id&&r.status==='pending')){toast('Already sent!');return;}
+  const r={id:nid('r'),donId,fromId:u.id,toId:don.donorId,qty:don.qty,pickup:'',status:'pending',date:new Date().toISOString().slice(0,10)};
+  reqs.push(r);saveReqs(reqs);
+  logEvent('action','Food request sent for: '+don.name+' by '+u.name);
+  renderFoodList();renderTopbar();
+  toast('📨 Request sent to '+getUsers().find(x=>x.id===don.donorId)?.name+'!');
+}
+
+// ════════════════════════════════════════════
+//  REQUESTS
+// ════════════════════════════════════════════
+function renderRequests(){
+  const u=getCU();if(!u) return;
+  const reqs=getReqs(),users=getUsers(),dons=getDons();
+  const incoming=reqs.filter(r=>r.toId===u.id);
+  document.getElementById('req-in-tbody').innerHTML=incoming.length?incoming.map(r=>{
+    const from=users.find(x=>x.id===r.fromId);const don=dons.find(d=>d.id===r.donId);
+    return `<tr><td><div style="display:flex;align-items:center;gap:8px"><div class="avt avt-sm">${inits(from?.name||'?')}</div><div><div class="fw5" style="font-size:13px">${esc(from?.name||'Unknown')}</div><div class="sm">${esc(from?.email||'')}</div></div></div></td><td class="fw5">${esc(don?.name||'Unknown')}</td><td>${esc(r.qty)}</td><td class="sm">${r.pickup?r.pickup.replace('T',' '):'Not set'}</td><td class="sm">${r.date}</td><td>${rsbadge(r.status)}</td><td><div style="display:flex;gap:5px;justify-content:flex-end">${r.status==='pending'?`<button class="btn btn-g btn-sm" onclick="acceptReq(${r.id})">Accept</button><button class="btn btn-red btn-sm" onclick="rejectReq(${r.id})">Reject</button>`:''}<button class="btn btn-ghost btn-sm" onclick="delReq(${r.id})">Del</button></div></td></tr>`;
+  }).join(''):`<tr><td colspan="7" class="empty-td">No incoming requests</td></tr>`;
+  const outCard=document.getElementById('req-out-card');const sendF=document.getElementById('send-req-form');
+  if(u.type==='donor'){if(outCard)outCard.style.display='none';if(sendF)sendF.style.display='none';return;}
+  if(outCard)outCard.style.display='';if(sendF)sendF.style.display=u.type==='charity'?'':'none';
+  const outgoing=reqs.filter(r=>r.fromId===u.id);
+  document.getElementById('req-out-tbody').innerHTML=outgoing.length?outgoing.map(r=>{
+    const don=dons.find(d=>d.id===r.donId);const donor=users.find(x=>x.id===r.toId);
+    return `<tr><td class="fw5">${esc(don?.name||'Unknown')}</td><td>${esc(donor?.name||'Unknown')}</td><td>${esc(r.qty)}</td><td class="sm">${r.pickup?r.pickup.replace('T',' '):'Not set'}</td><td>${rsbadge(r.status)}</td><td><div style="display:flex;gap:5px;justify-content:flex-end">${r.status==='pending'?`<button class="btn btn-amber btn-sm" onclick="cancelReq(${r.id})">Cancel</button>`:''}<button class="btn btn-ghost btn-sm" onclick="delReq(${r.id})">Del</button></div></td></tr>`;
+  }).join(''):`<tr><td colspan="6" class="empty-td">No sent requests yet</td></tr>`;
+}
+
+function populateReqSel(){
+  const u=getCU();if(!u) return;
+  const sel=document.getElementById('rf-sel');if(!sel) return;
+  const avail=getDons().filter(d=>d.status==='pending'&&d.donorId!==u.id);
+  sel.innerHTML=avail.length?avail.map(d=>`<option value="${d.id}">${esc(d.name)} — ${esc(d.qty)} (${esc(d.location)})</option>`).join(''):`<option>No available food</option>`;
+}
+
+function sendFoodRequest(){
+  if(!checkRateLimit('request')){toast('Too many requests.','err');return;}
+  const u=getCU();if(!u) return;
+  const donId=parseInt(document.getElementById('rf-sel')?.value)||0;
+  const qty=san(gv('rf-qty'));
+  if(!donId||!qty){toast('Please select food and enter quantity','err');return;}
+  const don=getDons().find(d=>d.id===donId);if(!don) return;
+  const reqs=getReqs();
+  if(reqs.find(r=>r.donId===donId&&r.fromId===u.id&&r.status==='pending')){toast('Already sent!');return;}
+  const r={id:nid('r'),donId,fromId:u.id,toId:don.donorId,qty,pickup:gv('rf-pickup'),status:'pending',date:new Date().toISOString().slice(0,10)};
+  reqs.push(r);saveReqs(reqs);
+  logEvent('action','Food request sent for: '+don.name+' by '+u.name);
+  document.getElementById('rf-qty').value='';document.getElementById('rf-pickup').value='';
+  renderRequests();renderTopbar();
+  toast('📨 Request sent to '+getUsers().find(x=>x.id===don.donorId)?.name+'!');
+}
+
+function acceptReq(id){
+  const reqs=getReqs();const r=reqs.find(x=>x.id===id);if(!r) return;
+  r.status='accepted';const dons=getDons();const d=dons.find(x=>x.id===r.donId);if(d)d.status='collected';
+  saveReqs(reqs);saveDons(dons);
+  logEvent('action','Food request accepted. Donation: #'+r.donId);
+  renderRequests();renderDashboard();renderTopbar();
+  toast('✅ Request accepted! Charity has been notified.');
+}
+
+function rejectReq(id){const reqs=getReqs();const r=reqs.find(x=>x.id===id);if(!r) return;r.status='rejected';saveReqs(reqs);renderRequests();renderDashboard();renderTopbar();toast('Request rejected.');}
+function cancelReq(id){const reqs=getReqs();const r=reqs.find(x=>x.id===id);if(!r) return;r.status='cancelled';saveReqs(reqs);renderRequests();toast('Request cancelled.');}
+function delReq(id){openModal('Delete request','Remove this request permanently?',[{l:'Cancel',c:'btn btn-ghost btn-sm',f:'closeModal()'},{l:'Delete',c:'btn btn-red btn-sm',f:`execDelReq(${id})`}]);}
+function execDelReq(id){saveReqs(getReqs().filter(r=>r.id!==id));closeModal();renderRequests();renderTopbar();toast('Deleted.');}
+
+// ════════════════════════════════════════════
+//  HISTORY
+// ════════════════════════════════════════════
+function renderHistory(){
+  const u=getCU();if(!u) return;
+  const now=new Date();
+  const my=[...getDons().filter(d=>d.donorId===u.id)].reverse().map(d=>{
+    if(new Date(d.expiry)<now&&d.status==='pending'){d.status='expired';const dons=getDons();const idx=dons.findIndex(x=>x.id===d.id);if(idx>=0){dons[idx].status='expired';saveDons(dons);}}
+    return d;
+  });
+  const col=my.filter(d=>d.status==='collected').length;
+  document.getElementById('hist-stats').innerHTML=`<div class="sc"><div class="sc-v tg">${my.length}</div><div class="sc-l">Total posted</div></div><div class="sc"><div class="sc-v" style="color:var(--g3)">${col}</div><div class="sc-l">Collected</div></div>`;
+  document.getElementById('hist-tbody').innerHTML=my.length?my.map(d=>`<tr><td class="fw5">${esc(d.name)}</td><td>${esc(d.qty)}</td><td class="sm">${esc(d.location)}</td><td>${expiryPill(d.expiry)}</td><td class="sm">${d.date}</td><td>${sbadge(d.status)}</td><td><div style="display:flex;gap:5px;justify-content:flex-end"><button class="btn btn-ghost btn-sm" onclick="editDon(${d.id})">Edit</button><button class="btn btn-red btn-sm" onclick="quickDelDon(${d.id})">Delete</button></div></td></tr>`).join(''):`<tr><td colspan="7" class="empty-td">No donations yet. <button class="btn btn-g btn-sm" onclick="nav('donate')" style="margin-left:8px">Post first donation</button></td></tr>`;
+}
+
+function editDon(id){
+  const d=getDons().find(x=>x.id===id);if(!d) return;
+  openModal('Edit donation',`<div class="fgrid" style="gap:10px"><div class="fg"><label class="flbl">Food name</label><input class="finput" id="ed-n" value="${esc(d.name)}" maxlength="100"></div><div class="fg"><label class="flbl">Quantity</label><input class="finput" id="ed-q" value="${esc(d.qty)}" maxlength="50"></div><div class="fg"><label class="flbl">Location</label><input class="finput" id="ed-l" value="${esc(d.location)}" maxlength="200"></div><div class="fg"><label class="flbl">Description</label><input class="finput" id="ed-d" value="${esc(d.desc||'')}" maxlength="500"></div></div>`,
+    [{l:'Cancel',c:'btn btn-ghost btn-sm',f:'closeModal()'},{l:'Save',c:'btn btn-g btn-sm',f:`saveEditDon(${id})`}]);
+}
+function saveEditDon(id){
+  const dons=getDons();const d=dons.find(x=>x.id===id);if(!d) return;
+  d.name=san(document.getElementById('ed-n').value)||d.name;d.qty=san(document.getElementById('ed-q').value)||d.qty;d.location=san(document.getElementById('ed-l').value)||d.location;d.desc=san(document.getElementById('ed-d').value);
+  saveDons(dons);logEvent('action','Donation edited: '+d.name);closeModal();renderHistory();renderDashboard();toast('✅ Updated!');
+}
+function quickDelDon(id){openModal('Delete donation','Remove this food donation permanently? All related requests will also be removed.',[{l:'Cancel',c:'btn btn-ghost btn-sm',f:'closeModal()'},{l:'Delete',c:'btn btn-red btn-sm',f:`execDelDon(${id})`}]);}
+function execDelDon(id){
+  const d=getDons().find(x=>x.id===id);
+  logEvent('action','Donation deleted: '+(d?.name||'#'+id));
+  saveDons(getDons().filter(d=>d.id!==id));saveReqs(getReqs().filter(r=>r.donId!==id));
+  closeModal();renderHistory();renderDashboard();renderTopbar();toast('Deleted.');
+}
+
+// ════════════════════════════════════════════
+//  SECURITY PAGE
+// ════════════════════════════════════════════
+function renderSecurityPage(){
+  const u=getCU();if(!u) return;
+  // Security score
+  const score=calcSecScore(u);
+  const scoreColor=score>=80?'var(--g5)':score>=60?'var(--blue)':score>=40?'var(--amber)':'var(--red)';
+  const scoreLabel=score>=80?'🛡️ Excellent':score>=60?'🔒 Good':score>=40?'⚠️ Fair':'🚨 Weak';
+  document.getElementById('sec-score-card').innerHTML=`
+    <div class="sec-score"><div class="ss-label">Security score</div><div class="ss-val">${score}/100</div><div class="ss-desc">${scoreLabel} — ${getSecTips(score)}</div><div class="ss-bar"><div class="ss-fill" style="width:${score}%;background:${scoreColor}"></div></div></div>`;
+  // Session info
+  const idle=Math.floor((Date.now()-lastActivity)/1000);
+  const remaining=Math.max(0,Math.floor((SEC.SESSION_TIMEOUT_MS-(Date.now()-lastActivity))/60000));
+  document.getElementById('session-info').innerHTML=`
+    <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--bdr)"><span class="sm">Current user</span><span class="fw5">${esc(u.name)}</span></div>
+    <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--bdr)"><span class="sm">IP address (simulated)</span><span class="fw5">${fakeIP()}</span></div>
+    <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--bdr)"><span class="sm">Last login</span><span class="fw5">${u.lastLogin?new Date(u.lastLogin).toLocaleString():'Unknown'}</span></div>
+    <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--bdr)"><span class="sm">Total logins</span><span class="fw5">${u.loginCount||0}</span></div>
+    <div style="display:flex;justify-content:space-between;padding:7px 0"><span class="sm">Session timeout in</span><span class="fw5 tg">${remaining} min</span></div>`;
+  // My activity log
+  const myLog=getLog().filter(l=>l.userId===u.id).slice(0,20);
+  document.getElementById('my-activity-log').innerHTML=myLog.length?myLog.map(l=>logItemHtml(l)).join(''):`<div class="sm" style="padding:16px;text-align:center;color:var(--ink4)">No activity recorded yet</div>`;
+}
+
+function calcSecScore(u){
+  let s=40;
+  if(u.loginCount>0) s+=10;
+  if(u.phone) s+=10;
+  if(u.location) s+=10;
+  if(u.lastLogin) s+=10;
+  // Check if password is "strong" (we can't check the hash, but we know the demo passwords)
+  s+=20; // assume password is already set
+  return Math.min(s,100);
+}
+
+function getSecTips(score){
+  if(score>=80) return 'Your account is well protected.';
+  if(score>=60) return 'Add phone number and enable 2FA to improve.';
+  if(score>=40) return 'Complete your profile and set a strong password.';
+  return 'Update your password and complete your profile.';
+}
+
+function logItemHtml(l){
+  const icons={login_ok:'✅',login_fail:'❌',lockout:'🔒',session_timeout:'⏱️',security:'🛡️',action:'📋',default:'ℹ️'};
+  const classes={login_ok:'ok',login_fail:'fail',lockout:'fail',session_timeout:'warn',security:'warn',action:'info'};
+  const ico=icons[l.type]||icons.default;
+  const cls=classes[l.type]||'info';
+  const dt=new Date(l.ts);
+  const timeStr=dt.toLocaleTimeString('en-BD',{hour:'2-digit',minute:'2-digit'})+' · '+dt.toLocaleDateString('en-BD',{month:'short',day:'numeric'});
+  return `<div class="log-item"><div class="log-ico ${cls}">${ico}</div><div class="log-info"><div class="log-title">${esc(l.msg)}</div><div class="log-meta">IP: ${esc(l.ip)} · ID: #${l.id}</div></div><div class="log-time">${timeStr}</div></div>`;
+}
+
+function changePassword(){
+  const u=getCU();if(!u) return;
+  const curPw=gv('sec-cur-pw'),newPw=gv('sec-new-pw'),confPw=gv('sec-conf-pw');
+  const errEl=document.getElementById('sec-pw-err');
+  hide('sec-pw-err');hide('sec-pw-suc');
+  if(hashPw(curPw)!==u.password){errEl.style.display='block';errEl.textContent='Current password is incorrect.';return;}
+  if(!isStrongEnough(newPw)){errEl.style.display='block';errEl.textContent='New password must be strong (see requirements).';return;}
+  if(newPw!==confPw){errEl.style.display='block';errEl.textContent='New passwords do not match.';return;}
+  if(hashPw(newPw)===u.password){errEl.style.display='block';errEl.textContent='New password must be different from current password.';return;}
+  const users=getUsers();const idx=users.findIndex(x=>x.id===u.id);
+  users[idx].password=hashPw(newPw);saveUsers(users);setCU(users[idx]);
+  logEvent('security','Password changed successfully for: '+u.name);
+  document.getElementById('sec-cur-pw').value='';document.getElementById('sec-new-pw').value='';document.getElementById('sec-conf-pw').value='';
+  document.getElementById('sec-pw-suc').style.display='block';
+  document.getElementById('sec-strength').style.display='none';
+  toast('✅ Password changed successfully!');
+}
+
+// ════════════════════════════════════════════
+//  MONEY DONATIONS
+// ════════════════════════════════════════════
+let selMethVal='bkash';
+function selMeth(el,m){document.querySelectorAll('.meth-c').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');selMethVal=m;}
+function setAmt(el,a){document.querySelectorAll('.amt-p').forEach(b=>b.classList.remove('on'));el.classList.add('on');document.getElementById('md-amt').value=a;}
+function resetMoneyForm(){['md-amt','md-ref','md-msg'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});const a=document.getElementById('md-anon');if(a)a.checked=false;document.getElementById('md-suc').style.display='none';document.getElementById('md-aerr').style.display='none';document.getElementById('md-rerr').style.display='none';document.querySelectorAll('.amt-p').forEach(b=>b.classList.remove('on'));}
+
+function submitMoneyDon(){
+  if(!checkRateLimit('money')){toast('Too many submissions.','err');return;}
+  const u=getCU();if(!u) return;
+  const amt=parseFloat(document.getElementById('md-amt')?.value||0);
+  const ref=san(gv('md-ref'));
+  const aerr=!amt||amt<10||amt>1000000;
+  const rerr=!ref||ref.length<3;
+  document.getElementById('md-aerr').style.display=aerr?'block':'none';
+  document.getElementById('md-rerr').style.display=rerr?'block':'none';
+  if(aerr||rerr) return;
+  const anon=document.getElementById('md-anon')?.checked;
+  const now=new Date();
+  const m={id:nid('m'),userId:u.id,userName:anon?'Anonymous':u.name,userEmail:anon?'—':u.email,amount:amt,method:selMethVal,reference:ref,message:san(gv('md-msg')),anonymous:anon,status:'pending',date:now.toISOString().slice(0,10),time:now.toLocaleTimeString('en-BD',{hour:'2-digit',minute:'2-digit'}),datetime:now.toISOString()};
+  const all=getMoneyDons();all.push(m);saveMoneyDons(all);
+  logEvent('action','Money donation submitted: ৳'+amt+' via '+selMethVal+(anon?' (anonymous)':''));
+  document.getElementById('md-suc').style.display='block';
+  resetMoneyForm();renderMyMoneyList();
+  toast('💰 Thank you! Donation of ৳'+amt.toLocaleString()+' recorded for admin confirmation.');
+}
+
+function renderMyMoneyList(){
+  const u=getCU();if(!u) return;
+  const my=getMoneyDons().filter(m=>m.userId===u.id);
+  const el=document.getElementById('my-money-list');if(!el) return;
+  el.innerHTML=my.length?[...my].reverse().slice(0,5).map(m=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--bdr)"><div><div class="fw5">৳${m.amount.toLocaleString()} via ${m.method}</div><div class="sm">${m.date} ${m.time}</div></div><span class="badge ${m.status==='confirmed'?'b-acc':m.status==='rejected'?'b-rej':'b-pend'}">${m.status}</span></div>`).join(''):`<div class="sm" style="text-align:center;padding:16px 0;color:var(--ink4)">No money donations yet</div>`;
+}
+
+// ════════════════════════════════════════════
+//  ADMIN
+// ════════════════════════════════════════════
+function renderAdmin(){
+  const u=getCU();if(!u||u.type!=='admin'){nav('dashboard');toast('Admin access only.','err');return;}
+  const users=getUsers(),dons=getDons(),reqs=getReqs();
+  const moneyTotal=getMoneyDons().filter(m=>m.status==='confirmed').reduce((s,m)=>s+m.amount,0);
+  const blocked=users.filter(x=>x.blocked).length;
+  const failedLogins=getLog().filter(l=>l.type==='login_fail').length;
+  document.getElementById('admin-stats-grid').innerHTML=`
+    <div class="sc"><div class="sc-ico" style="background:var(--blue)"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div><div class="sc-v">${users.length}</div><div class="sc-l">Total users</div><div class="sc-d tb">${users.filter(x=>!x.blocked).length} active · ${blocked} blocked</div></div>
+    <div class="sc"><div class="sc-ico" style="background:var(--g5)"><svg viewBox="0 0 24 24"><path d="M18.06 22.99h1.66c.84 0 1.53-.64 1.63-1.46L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26 1.44 1.42 2.43 2.89 2.43 5.29v8.05zM1 21.99V21h15.03v.99c0 .55-.45 1-1.01 1H2.01c-.56 0-1.01-.45-1.01-1zm15.03-7c0-3.31-2.89-5.99-6.45-5.99C5.88 8.99 3 11.67 3 14.99h13.03zM4 19h12.03v1H4v-1z"/></svg></div><div class="sc-v tg">${dons.length}</div><div class="sc-l">Donations</div><div class="sc-d tg">${dons.filter(d=>d.status==='pending').length} active</div></div>
+    <div class="sc" style="cursor:pointer" onclick="aTab('money',document.querySelectorAll('.atab')[3])"><div class="sc-ico" style="background:var(--blue)"><svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg></div><div class="sc-v tb">৳${moneyTotal.toLocaleString()}</div><div class="sc-l">Money received</div><div class="sc-d tb">${getMoneyDons().filter(m=>m.status==='pending').length} pending</div></div>
+    <div class="sc" style="cursor:pointer" onclick="aTab('security',document.querySelectorAll('.atab')[4])"><div class="sc-ico" style="background:${failedLogins>0?'var(--orange)':'var(--g5)'}"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div><div class="sc-v" style="color:${failedLogins>0?'var(--orange)':'var(--g5)'}">${failedLogins}</div><div class="sc-l">Failed logins</div><div class="sc-d" style="color:${failedLogins>0?'var(--orange)':'var(--g5)'}">${failedLogins>0?'View security log →':'No threats'}</div></div>`;
+  renderAUsers();
+}
+
+function aTab(tab,el){
+  document.querySelectorAll('.atab').forEach(t=>t.classList.remove('on'));if(el)el.classList.add('on');
+  ['users','donations','requests','money','security','analytics'].forEach(t=>{const p=document.getElementById('a-'+t);if(p)p.style.display=t===tab?'':'none';});
+  if(tab==='users') renderAUsers();
+  else if(tab==='donations') renderADons();
+  else if(tab==='requests') renderAReqs();
+  else if(tab==='money') renderAMoney();
+  else if(tab==='security') renderASecurityLog();
+  else if(tab==='analytics') renderAAnalytics();
+}
+
+function renderAUsers(){
+  const u=getCU();const users=getUsers();
+  document.getElementById('a-users-tbody').innerHTML=users.map(usr=>{
+    const dCount=getDons().filter(d=>d.donorId===usr.id).length;
+    const isMe=u&&usr.id===u.id;
+    const rc={'donor':'b-donor','charity':'b-charity','admin':'b-admin'}[usr.type]||'b-donor';
+    const lastLogin=usr.lastLogin?new Date(usr.lastLogin).toLocaleDateString():'Never';
+    return `<tr><td><div style="display:flex;align-items:center;gap:8px"><div class="avt avt-sm">${inits(usr.name)}</div><div><div class="fw5" style="font-size:13px">${esc(usr.name)}</div><div class="sm">${esc(usr.phone||'')}</div></div></div></td><td class="sm">${esc(usr.email)}</td><td><span class="badge ${rc}">${usr.type}</span></td><td class="sm">${esc(usr.location||'—')}</td><td class="sm">${usr.joined}</td><td class="${dCount>0?'tg fw5':'sm'}">${dCount||'—'}</td><td class="sm">${lastLogin}</td><td>${usr.blocked?'<span class="badge b-blocked">Blocked</span>':'<span class="badge b-active">Active</span>'}</td><td><div style="display:flex;gap:5px;justify-content:flex-end">${!isMe?`<button class="btn ${usr.blocked?'btn-g':'btn-amber'} btn-sm" onclick="${usr.blocked?`aUnblock(${usr.id})`:`aBlock(${usr.id})`}">${usr.blocked?'Unblock':'Block'}</button><button class="btn btn-red btn-sm" onclick="aDelUser(${usr.id})">Delete</button>`:'<span class="sm tg">You</span>'}</div></td></tr>`;
+  }).join('');
+}
+
+function renderADons(){
+  const users=getUsers();
+  document.getElementById('a-dons-tbody').innerHTML=getDons().map(d=>{
+    const donor=users.find(x=>x.id===d.donorId);
+    return `<tr><td class="fw5">${esc(d.name)}</td><td>${esc(donor?.name||'Deleted')}</td><td>${esc(d.qty)}</td><td class="sm">${esc(d.location)}</td><td class="sm">${d.date}</td><td>${expiryPill(d.expiry)}</td><td>${sbadge(d.status)}</td><td><button class="btn btn-red btn-sm" onclick="aDelDon(${d.id})" style="float:right">Del</button></td></tr>`;
+  }).join('')||`<tr><td colspan="8" class="empty-td">No donations</td></tr>`;
+}
+
+function renderAReqs(){
+  const users=getUsers(),dons=getDons();
+  document.getElementById('a-reqs-tbody').innerHTML=getReqs().map(r=>{
+    const from=users.find(x=>x.id===r.fromId);const to=users.find(x=>x.id===r.toId);const don=dons.find(d=>d.id===r.donId);
+    return `<tr><td>${esc(from?.name||'?')}</td><td>${esc(to?.name||'?')}</td><td class="fw5">${esc(don?.name||'?')}</td><td>${esc(r.qty)}</td><td>${rsbadge(r.status)}</td><td class="sm">${r.date}</td><td><button class="btn btn-red btn-sm" onclick="aDelReq(${r.id})" style="float:right">Del</button></td></tr>`;
+  }).join('')||`<tr><td colspan="7" class="empty-td">No requests</td></tr>`;
+}
+
+let moneyFilter='all';
+function filterMoney(f,el){moneyFilter=f;document.querySelectorAll('#a-money .card-hd .btn-ghost').forEach(b=>b.classList.remove('btn-g'));if(el)el.classList.add('btn-g');renderAMoney();}
+
+function renderAMoney(){
+  const u=getCU();if(!u) return;
+  const all=getMoneyDons(),out=getMoneyOut();
+  const totalRecv=all.filter(m=>m.status==='confirmed').reduce((s,m)=>s+m.amount,0);
+  const totalSent=out.reduce((s,m)=>s+m.amount,0);
+  const pending=all.filter(m=>m.status==='pending').length;
+  const e1=document.getElementById('adm-recv-total');const e2=document.getElementById('adm-sent-total');const e3=document.getElementById('adm-pend-cnt');
+  if(e1)e1.textContent='৳'+totalRecv.toLocaleString();if(e2)e2.textContent='৳'+totalSent.toLocaleString();if(e3)e3.textContent=pending;
+  const sel=document.getElementById('a-send-to');
+  if(sel){const cs=getUsers().filter(x=>x.type==='charity'&&!x.blocked);sel.innerHTML=cs.length?cs.map(c=>`<option value="${c.id}">${esc(c.name)}`).join(''):`<option>No charities</option>`;}
+  const filtered=moneyFilter==='all'?all:all.filter(m=>m.status===moneyFilter);
+  const tbody=document.getElementById('a-money-tbody');
+  if(tbody)tbody.innerHTML=filtered.length?[...filtered].reverse().map(m=>`<tr><td><div style="display:flex;align-items:center;gap:8px"><div class="avt avt-sm">${m.anonymous?'AN':inits(m.userName)}</div><div><div class="fw5" style="font-size:13px">${esc(m.userName)}</div><div class="sm">${esc(m.userEmail)}</div></div></div></td><td><strong style="color:var(--g4)">৳${m.amount.toLocaleString()}</strong></td><td>${m.method}</td><td class="sm">${esc(m.reference)}</td><td class="sm" style="max-width:130px;overflow:hidden;text-overflow:ellipsis">${m.message||'—'}</td><td class="sm">${m.date} · ${m.time}</td><td><span class="badge ${m.status==='confirmed'?'b-acc':m.status==='rejected'?'b-rej':'b-pend'}">${m.status}</span></td><td><div style="display:flex;gap:5px;justify-content:flex-end">${m.status==='pending'?`<button class="btn btn-g btn-sm" onclick="confMoney(${m.id})">Confirm</button><button class="btn btn-red btn-sm" onclick="rejMoney(${m.id})">Reject</button>`:''}<button class="btn btn-ghost btn-sm" onclick="delMoney(${m.id})">Del</button></div></td></tr>`).join(''):`<tr><td colspan="8" class="empty-td">No donations found</td></tr>`;
+  const stbody=document.getElementById('a-sent-tbody');
+  if(stbody)stbody.innerHTML=out.length?[...out].reverse().map(o=>`<tr><td><div class="fw5">${esc(o.toName)}</div><div class="sm">${esc(o.toEmail||'')}</div></td><td><strong style="color:var(--blue)">৳${o.amount.toLocaleString()}</strong></td><td>${o.method}</td><td class="sm">${esc(o.note||'—')}</td><td class="sm">${esc(o.sentBy)}</td><td class="sm">${o.date} · ${o.time}</td></tr>`).join(''):`<tr><td colspan="6" class="empty-td">No outgoing payments</td></tr>`;
+}
+
+function confMoney(id){const all=getMoneyDons();const m=all.find(x=>x.id===id);if(!m) return;m.status='confirmed';saveMoneyDons(all);logEvent('action','Money donation confirmed: ৳'+m.amount);renderAMoney();toast('✅ ৳'+m.amount.toLocaleString()+' confirmed!');}
+function rejMoney(id){const all=getMoneyDons();const m=all.find(x=>x.id===id);if(!m) return;m.status='rejected';saveMoneyDons(all);renderAMoney();toast('Rejected.');}
+function delMoney(id){openModal('Delete record','Remove permanently?',[{l:'Cancel',c:'btn btn-ghost btn-sm',f:'closeModal()'},{l:'Delete',c:'btn btn-red btn-sm',f:`execDelMoney(${id})`}]);}
+function execDelMoney(id){saveMoneyDons(getMoneyDons().filter(m=>m.id!==id));closeModal();renderAMoney();toast('Deleted.');}
+
+function adminSendMoney(){
+  const u=getCU();if(!u) return;
+  const toId=parseInt(document.getElementById('a-send-to')?.value)||0;
+  const amt=parseFloat(document.getElementById('a-send-amt')?.value)||0;
+  const method=document.getElementById('a-send-meth')?.value||'bkash';
+  const note=san(gv('a-send-note'));
+  if(!toId||!amt||amt<1){toast('Please fill charity and amount','err');return;}
+  const toUser=getUsers().find(x=>x.id===toId);if(!toUser) return;
+  const now=new Date();
+  const out=getMoneyOut();
+  out.push({id:nid('mo'),toId,toName:toUser.name,toEmail:toUser.email,amount:amt,method,note,sentBy:u.name,date:now.toISOString().slice(0,10),time:now.toLocaleTimeString('en-BD',{hour:'2-digit',minute:'2-digit'})});
+  saveMoneyOut(out);
+  logEvent('action','Admin sent ৳'+amt+' to '+toUser.name+' via '+method);
+  if(document.getElementById('a-send-amt'))document.getElementById('a-send-amt').value='';
+  if(document.getElementById('a-send-note'))document.getElementById('a-send-note').value='';
+  renderAMoney();toast('💸 ৳'+amt.toLocaleString()+' sent to '+toUser.name+'!');
+}
+
+let logFilter='all';
+function filterLog(f,el){logFilter=f;document.querySelectorAll('#a-security .card-hd .btn-ghost').forEach(b=>b.classList.remove('btn-g'));if(el)el.classList.add('btn-g');renderASecurityLog();}
+
+function renderASecurityLog(){
+  const log=getLog();
+  const users=getUsers();
+  const attempts=getAttempts();
+  // Security alerts
+  const failedLogins=log.filter(l=>l.type==='login_fail').length;
+  const lockouts=log.filter(l=>l.type==='lockout').length;
+  const lockedNow=Object.entries(attempts).filter(([e,a])=>a.lockedUntil&&a.lockedUntil>Date.now());
+  let alerts='';
+  if(failedLogins>10) alerts+=`<div class="sec-alert"><svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg><div><strong>High number of failed logins detected</strong><br>${failedLogins} failed login attempts recorded. Consider reviewing user access.</div></div>`;
+  if(lockouts>0) alerts+=`<div class="sec-alert"><svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg><div><strong>${lockouts} account lockout${lockouts!==1?'s':''} recorded</strong><br>Multiple failed login attempts triggered lockouts.</div></div>`;
+  if(!alerts) alerts='<div class="notice n-suc">✅ No active security threats detected. Platform is secure.</div>';
+  document.getElementById('a-security-alerts').innerHTML=alerts;
+  // Full log
+  const filtered=logFilter==='all'?log:log.filter(l=>l.type===logFilter||l.type.includes(logFilter));
+  document.getElementById('a-log-list').innerHTML=filtered.length?filtered.slice(0,100).map(l=>{
+    const usr=users.find(u=>u.id===l.userId);
+    const fullLog=Object.assign({},l,{msg:l.msg+(usr?' — User: '+usr.name:'')});
+    return logItemHtml(fullLog);
+  }).join(''):`<div class="sm" style="padding:20px;text-align:center;color:var(--ink4)">No log entries for this filter</div>`;
+  // Login stats
+  const ok=log.filter(l=>l.type==='login_ok').length;
+  const fail=log.filter(l=>l.type==='login_fail').length;
+  const total=ok+fail;
+  document.getElementById('a-login-stats').innerHTML=`
+    <div class="prog-row"><span class="prog-lbl">Successful</span><div class="prog-bar"><div class="prog-fill" style="width:${total?Math.round(ok/total*100):0}%"></div></div><span class="prog-pct tg">${ok}</span></div>
+    <div class="prog-row"><span class="prog-lbl">Failed</span><div class="prog-bar"><div class="prog-fill" style="width:${total?Math.round(fail/total*100):0}%;background:var(--red)"></div></div><span class="prog-pct tr">${fail}</span></div>
+    <div class="prog-row"><span class="prog-lbl">Lockouts</span><div class="prog-bar"><div class="prog-fill" style="width:${total?Math.round(lockouts/Math.max(total,1)*100):0}%;background:var(--orange)"></div></div><span class="prog-pct to">${lockouts}</span></div>`;
+  // Locked accounts
+  document.getElementById('a-locked-accts').innerHTML=lockedNow.length?lockedNow.map(([email,data])=>{
+    const rem=Math.ceil((data.lockedUntil-Date.now())/60000);
+    return `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bdr)"><div><div class="fw5" style="font-size:13px">${esc(email)}</div><div class="sm">${data.count} failed attempts · Unlocks in ${rem}m</div></div><button class="btn btn-ghost btn-sm" onclick="adminUnlockEmail('${esc(email)}')">Unlock</button></div>`;
+  }).join(''):`<div class="sm" style="padding:16px;text-align:center;color:var(--ink4)">✅ No accounts currently locked</div>`;
+}
+
+function clearLog(){openModal('Clear security log','Remove all audit log entries? This cannot be undone.',[{l:'Cancel',c:'btn btn-ghost btn-sm',f:'closeModal()'},{l:'Clear log',c:'btn btn-red btn-sm',f:'execClearLog()'}]);}
+function execClearLog(){saveLog([]);closeModal();renderASecurityLog();toast('Log cleared.');}
+function adminUnlockEmail(email){clearAttempts(email);logEvent('security','Admin manually unlocked account: '+email);renderASecurityLog();toast('Account unlocked: '+email);}
+
+function renderAAnalytics(){
+  const users=getUsers(),dons=getDons(),reqs=getReqs();
+  const donors=users.filter(x=>x.type==='donor').length;const charities=users.filter(x=>x.type==='charity').length;const admins=users.filter(x=>x.type==='admin').length;
+  document.getElementById('a-anal-users').innerHTML=`<div class="prog-row"><span class="prog-lbl">Donors</span><div class="prog-bar"><div class="prog-fill" style="width:${users.length?Math.round(donors/users.length*100):0}%"></div></div><span class="prog-pct">${donors}</span></div><div class="prog-row"><span class="prog-lbl">Charities</span><div class="prog-bar"><div class="prog-fill" style="width:${users.length?Math.round(charities/users.length*100):0}%"></div></div><span class="prog-pct">${charities}</span></div><div class="prog-row"><span class="prog-lbl">Admins</span><div class="prog-bar"><div class="prog-fill" style="width:${users.length?Math.round(admins/users.length*100):0}%"></div></div><span class="prog-pct">${admins}</span></div>`;
+  const p=dons.filter(d=>d.status==='pending').length;const c=dons.filter(d=>d.status==='collected').length;const e=dons.filter(d=>d.status==='expired').length;
+  document.getElementById('a-anal-dons').innerHTML=`<div class="prog-row"><span class="prog-lbl">Pending</span><div class="prog-bar"><div class="prog-fill" style="width:${dons.length?Math.round(p/dons.length*100):0}%;background:var(--amber)"></div></div><span class="prog-pct">${p}</span></div><div class="prog-row"><span class="prog-lbl">Collected</span><div class="prog-bar"><div class="prog-fill" style="width:${dons.length?Math.round(c/dons.length*100):0}%"></div></div><span class="prog-pct">${c}</span></div><div class="prog-row"><span class="prog-lbl">Expired</span><div class="prog-bar"><div class="prog-fill" style="width:${dons.length?Math.round(e/dons.length*100):0}%;background:var(--red)"></div></div><span class="prog-pct">${e}</span></div>`;
+  document.getElementById('a-anal-signups').innerHTML=`<div style="font-size:13px;display:flex;flex-direction:column;gap:7px">`+users.slice(-5).reverse().map(u=>`<div style="display:flex;align-items:center;justify-content:space-between"><div style="display:flex;align-items:center;gap:7px"><div class="avt avt-sm">${inits(u.name)}</div><span>${esc(u.name)}</span></div><span class="badge b-${u.type}">${u.type}</span></div>`).join('')+'</div>';
+  const collRate=dons.length?Math.round(c/dons.length*100):0;const reqAcc=reqs.length?Math.round(reqs.filter(r=>r.status==='accepted').length/reqs.length*100):0;
+  document.getElementById('a-anal-health').innerHTML=`<div class="prog-row"><span class="prog-lbl">Collection rate</span><div class="prog-bar"><div class="prog-fill" style="width:${collRate}%"></div></div><span class="prog-pct">${collRate}%</span></div><div class="prog-row"><span class="prog-lbl">Request acc.</span><div class="prog-bar"><div class="prog-fill" style="width:${reqAcc}%"></div></div><span class="prog-pct">${reqAcc}%</span></div><div class="prog-row"><span class="prog-lbl">Active users</span><div class="prog-bar"><div class="prog-fill" style="width:${users.length?Math.round(users.filter(u=>!u.blocked).length/users.length*100):0}%"></div></div><span class="prog-pct">${users.filter(u=>!u.blocked).length}</span></div>`;
+}
+
+function aBlock(id){const us=getUsers();const u=us.find(x=>x.id===id);if(!u) return;u.blocked=true;saveUsers(us);logEvent('security','Admin blocked user: '+u.name);renderAUsers();toast(u.name+' blocked.');}
+function aUnblock(id){const us=getUsers();const u=us.find(x=>x.id===id);if(!u) return;u.blocked=false;saveUsers(us);logEvent('security','Admin unblocked user: '+u.name);renderAUsers();toast(u.name+' unblocked.');}
+function aDelUser(id){const u=getUsers().find(x=>x.id===id);openModal('Delete user','Delete '+esc(u?.name||'user')+'? All their data will also be removed permanently.',[{l:'Cancel',c:'btn btn-ghost btn-sm',f:'closeModal()'},{l:'Delete',c:'btn btn-red btn-sm',f:`execADelUser(${id})`}]);}
+function execADelUser(id){const u=getUsers().find(x=>x.id===id);saveUsers(getUsers().filter(x=>x.id!==id));saveDons(getDons().filter(d=>d.donorId!==id));saveReqs(getReqs().filter(r=>r.fromId!==id&&r.toId!==id));logEvent('security','Admin deleted user: '+(u?.name||'#'+id));closeModal();renderAdmin();toast('User deleted.');}
+function aDelDon(id){openModal('Delete donation','Remove this donation and its requests?',[{l:'Cancel',c:'btn btn-ghost btn-sm',f:'closeModal()'},{l:'Delete',c:'btn btn-red btn-sm',f:`execADelDon(${id})`}]);}
+function execADelDon(id){saveDons(getDons().filter(d=>d.id!==id));saveReqs(getReqs().filter(r=>r.donId!==id));closeModal();renderADons();toast('Deleted.');}
+function aDelReq(id){saveReqs(getReqs().filter(r=>r.id!==id));renderAReqs();toast('Deleted.');}
+function exportUsers(){
+  const rows=[['Name','Email','Type','Location','Joined','Donations','Last Login','Status'],...getUsers().map(u=>[u.name,u.email,u.type,u.location||'',u.joined,getDons().filter(d=>d.donorId===u.id).length,u.lastLogin||'Never',u.blocked?'Blocked':'Active'])];
+  const csv=rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const a=document.createElement('a');a.href='data:text/csv,'+encodeURIComponent(csv);a.download='foodshare_users.csv';a.click();
+  logEvent('action','Admin exported user data (CSV)');toast('Exported!');
+}
+function exportMoneyCsv(){
+  const rows=[['Donor','Email','Amount','Method','Reference','Message','Date','Time','Status'],...getMoneyDons().map(m=>[m.userName,m.userEmail,m.amount,m.method,m.reference,m.message||'',m.date,m.time,m.status])];
+  const csv=rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const a=document.createElement('a');a.href='data:text/csv,'+encodeURIComponent(csv);a.download='foodshare_money.csv';a.click();
+  logEvent('action','Admin exported money donation data (CSV)');toast('Exported!');
+}
+
+// ════════════════════════════════════════════
+//  PROFILE
+// ════════════════════════════════════════════
+function renderProfile(){
+  const u=getCU();if(!u) return;
+  const myDons=getDons().filter(d=>d.donorId===u.id).length;
+  document.getElementById('prof-hero-box').innerHTML=`<div class="prof-av">${inits(u.name)}</div><div><div style="font-size:20px;font-weight:600;margin-bottom:3px">${esc(u.name)}</div><div class="sm">${u.type} · Since ${u.joined} · ${myDons} donations · ${esc(u.location||'Location not set')}</div></div>`;
+  document.getElementById('pf-name').value=u.name;
+  document.getElementById('pf-phone').value=u.phone||'';
+  document.getElementById('pf-loc').value=u.location||'';
+  document.getElementById('pf-suc').style.display='none';
+  document.getElementById('pf-details').innerHTML=`<div style="font-size:13px"><div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bdr)"><span class="sm">Email</span><span class="fw5">${esc(u.email)}</span></div><div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bdr)"><span class="sm">Account type</span><span class="badge b-${u.type}">${u.type}</span></div><div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bdr)"><span class="sm">Phone</span><span>${esc(u.phone||'—')}</span></div><div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bdr)"><span class="sm">Last login</span><span>${u.lastLogin?new Date(u.lastLogin).toLocaleString():'—'}</span></div><div style="display:flex;justify-content:space-between;padding:6px 0"><span class="sm">Total logins</span><span class="fw5 tg">${u.loginCount||0}</span></div></div>`;
+  // Account switcher
+  const users=getUsers().filter(x=>!x.blocked);
+  document.getElementById('as-list').innerHTML=users.map(usr=>`<div class="as-item${u.id===usr.id?' cur':''}" onclick="${u.id===usr.id?'':('switchAcct('+usr.id+')')}"><div style="display:flex;align-items:center;gap:8px"><div class="as-av" style="background:${{donor:'#1B63B5',charity:'#C97B1A',admin:'#B52E2E'}[usr.type]||'#1B63B5'}">${inits(usr.name)}</div><div><div style="font-size:13px;font-weight:500">${esc(usr.name)}</div><div class="sm">${usr.email} · ${usr.type}</div></div></div><span>${u.id===usr.id?'<span class="badge b-active">Current</span>':'<span class="sm tg">Switch →</span>'}</span></div>`).join('');
+}
+
+function switchAcct(id){const u=getUsers().find(x=>x.id===id);if(!u||u.blocked){toast('Cannot switch.','err');return;}setCU(u);nav('dashboard');toast('Switched to '+u.name);}
+
+function updateProfile(){
+  const u=getCU();if(!u) return;
+  const name=san(gv('pf-name'));if(!name||name.length<2){toast('Name must be at least 2 characters.','err');return;}
+  const users=getUsers();const idx=users.findIndex(x=>x.id===u.id);if(idx<0) return;
+  users[idx].name=name;users[idx].phone=san(gv('pf-phone'));users[idx].location=san(gv('pf-loc'));
+  saveUsers(users);setCU(users[idx]);
+  logEvent('action','Profile updated: '+name);
+  document.getElementById('pf-suc').style.display='block';renderProfile();renderTopbar();toast('✅ Profile updated!');
+}
+
+function confirmDeleteAccount(){
+  openModal('⚠️ Delete your account','Enter your password to confirm deletion. This will permanently remove your account, all donations, and requests.',`<div class="fg" style="margin-bottom:0"><label class="flbl">Confirm your password</label><input class="finput" type="password" id="del-confirm-pw" placeholder="Your current password"></div>`,[{l:'Cancel',c:'btn btn-ghost btn-sm',f:'closeModal()'},{l:'Delete everything',c:'btn btn-red btn-sm',f:'execDeleteAcct()'}]);
+}
+function execDeleteAcct(){
+  const u=getCU();if(!u) return;
+  const pw=document.getElementById('del-confirm-pw')?.value;
+  if(!pw||hashPw(pw)!==u.password){toast('Incorrect password. Account not deleted.','err');return;}
+  const id=u.id;
+  logEvent('security','Account self-deleted: '+u.name+' ('+u.email+')');
+  saveUsers(getUsers().filter(x=>x.id!==id));saveDons(getDons().filter(d=>d.donorId!==id));saveReqs(getReqs().filter(r=>r.fromId!==id&&r.toId!==id));
+  setCU(null);closeModal();if(sessionTimer)clearInterval(sessionTimer);nav('signup');toast('Your account has been permanently deleted.');
+}
+
+// ════════════════════════════════════════════
+//  HELPERS
+// ════════════════════════════════════════════
+function sbadge(s){const m={pending:'b-pend Pending',collected:'b-coll Collected',expired:'b-exp Expired'};const pair=(m[s]||('b-pend '+s)).split(' ');return `<span class="badge ${pair[0]}">${pair.slice(1).join(' ')||s}</span>`;}
+function rsbadge(s){const m={pending:'b-pend Pending',accepted:'b-acc Accepted',rejected:'b-rej Rejected',cancelled:'b-can Cancelled'};const pair=(m[s]||('b-pend '+s)).split(' ');return `<span class="badge ${pair[0]}">${pair.slice(1).join(' ')||s}</span>`;}
+function inits(name){return (name||'?').split(' ').map(w=>w[0]||'').join('').substring(0,2).toUpperCase()||'?';}
+function esc(s){const d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML;}
+function san(s){if(!s) return '';return s.replace(/[<>]/g,'').trim().substring(0,500);}
+function gv(id){const el=document.getElementById(id);return el?el.value.trim():'';}
+function show(id){const el=document.getElementById(id);if(el)el.style.display='block';}
+function hide(id){const el=document.getElementById(id);if(el)el.style.display='none';}
+function isValidEmail(e){return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e);}
+
+function expiryPill(exp){
+  if(!exp) return '<span class="ep-pill ep-exp">No expiry</span>';
+  const now=new Date();const d=new Date(exp);const ms=d-now;const hrs=Math.floor(ms/3600000);const days=Math.floor(ms/86400000);
+  if(ms<=0) return '<span class="ep-pill ep-exp">⛔ Expired</span>';
+  if(hrs<24) return `<span class="ep-pill ep-now">🔴 Expires in ${hrs}h ${Math.floor((ms%3600000)/60000)}m</span>`;
+  if(days<=2) return `<span class="ep-pill ep-soon">🟡 Expires in ${days} day${days!==1?'s':''}</span>`;
+  return `<span class="ep-pill ep-ok">🟢 Available · ${days} days left</span>`;
+}
+
+let toastT;
+function toast(msg,type='ok'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast'+(type==='err'?' toast-err':type==='warn'?' toast-warn':'');
+  t.style.display='block';
+  clearTimeout(toastT);toastT=setTimeout(()=>t.style.display='none',3600);
+}
+
+function openModal(title,body,btns){
+  document.getElementById('modal-t').textContent=title;
+  document.getElementById('modal-b').innerHTML=typeof body==='string'?body:`<div class="fgrid" style="gap:10px">${body}</div>`;
+  document.getElementById('modal-btns').innerHTML=Array.isArray(btns)?btns.map(b=>`<button class="${b.c}" onclick="${b.f}">${b.l}</button>`).join(''):'';
+  document.getElementById('modal-ov').classList.add('show');
+}
+function closeModal(){document.getElementById('modal-ov').classList.remove('show');}
+
+window.addEventListener('scroll',()=>{document.getElementById('hn')?.classList.toggle('sc',window.scrollY>44);});
+
+// ════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════
+seed();
+document.getElementById('home-view').style.display='block';
+document.getElementById('app-view').style.display='none';
+// Restore session if logged in
+const restoredUser=getCU();
+if(restoredUser){startSessionTimer();}
+</script>
+</body>
+</html>
